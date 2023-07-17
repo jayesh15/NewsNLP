@@ -3,7 +3,7 @@
 
 # Task 1: Identify a suitable website for web scraping
 website_url = "https://www.examplenewswebsite.com"
-corpus=[]
+corpus=['news']
 output=[]
 
 # Task 2: Research and select appropriate web scraping tools and libraries
