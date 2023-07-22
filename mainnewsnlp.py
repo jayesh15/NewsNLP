@@ -45,7 +45,7 @@ global_url2 = "https://www.theweek.in/wire-updates/international/2023/07/11/fgn1
 
 # Scrape and print sports news
 print("----- Sports News -----")
-scrape_website(sports_url1, 'native_story_title', 'full-details', "advertisement")
+scrape_website(sports_url1, 'native_story_title', 'full-details', "Advertisement")
 scrape_website(sports_url2, 'primary-font__PrimaryFontStyles-o56yd5-0 gVBMpi headline', 'default__ArticleBody-sc-1wxyvyl-2 hEvcgL article-body-wrapper-custom', "Advertisement")
 
 # Scrape and print technology news
