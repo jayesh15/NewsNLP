@@ -1,14 +1,18 @@
 # Team 1: Web Scraping
 # TODO: Import necessary libraries for web scraping
 
+import requests
+from bs4 import BeautifulSoup as soup
+
 # Task 1: Identify a suitable website for web scraping
 # Sports news URLs
+# Sports news URLs
 sports_url1 = "https://indianexpress.com/article/sports/tennis/novak-djokovic-ties-roger-federer-wimbledon-8828916/"
-sports_url2 = "https://mcdowellnews.com/sports/professional/djokovic-ties-federer-with-46-slam-semifinals-meets-sinner-next/article_af9d586a-2030-11ee-82e4-0b2a92280f49.html"
+sports_url2 = "https://www.nydailynews.com/sports/more-sports/ny-novak-djokovic-roger-federer-grand-slam-wimbledon-20230711-eyeiq4rnazc5lg2hkd5ykoi46u-story.html"
 
 # Technology news URLs
 tech_url1 = "https://indianexpress.com/article/technology/tech-news-technology/amazon-makes-first-big-tech-challenge-to-eu-online-content-rules-8829113/"
-tech_url2 = "https://economictimes.indiatimes.com/tech/technology/amazon-challenges-eu-online-content-rules-says-unfairly-singled-out/articleshow/101668958.cms"
+tech_url2 = "https://www.reuters.com/technology/amazon-challenges-eu-online-content-rules-says-unfairly-singled-out-2023-07-11/"
 
 # Education news URLs
 edu_url1 = "https://indianexpress.com/article/education/aiims-proposes-to-quash-interview-for-phd-selection-8829283/"
@@ -16,11 +20,12 @@ edu_url2 = "https://theprint.in/india/aiims-proposes-to-quash-interviews-in-phd-
 
 # Political news URLs
 politics_url1 = "https://indianexpress.com/article/political-pulse/sc-prepares-article-370-pleas-look-major-parties-stand-8829676/"
-politics_url2 = "https://economictimes.indiatimes.com/news/india/sc-to-hear-pleas-challenging-article-370-abrogation-from-august-2/articleshow/101658010.cms"
+politics_url2 = "https://www.livemint.com/news/india/jammu-and-kashmir-sc-to-hear-batch-of-pleas-challenging-the-abrogation-of-article-370-from-august-2-11689053035450.html"
 
 # Global news URLs
-url1 = "https://indianexpress.com/article/explained/explained-global/swedens-rocky-road-from-neutrality-toward-nato-membership-8827291/"
-url2 = "https://www.theweek.in/wire-updates/international/2023/07/11/fgn19-sweden-nato-explainer.html"
+global_url1 = "https://indianexpress.com/article/explained/explained-global/swedens-rocky-road-from-neutrality-toward-nato-membership-8827291/"
+global_url2 = "https://www.theweek.in/wire-updates/international/2023/07/11/fgn19-sweden-nato-explainer.html"
+
 
 corpus=[]
 output=[]
@@ -32,14 +37,26 @@ from bs4 import BeautifulSoup as soup
 
 # Task 3: Develop a web scraping script
 # TODO: Write a function to scrape data from the chosen website
-def scrape_website(url, headline_class, article_class):
+corpus = []
+
+def scrape_website(url, headline_class, article_class, ads):
     html = requests.get(url)
     bsobj = soup(html.content, 'lxml')
 
-    for headline in bsobj.findAll('h1', {'class': headline_class}): 
-      corpus.append("Headline : {}".format(headline.text))
-      for article in bsobj.findAll('div', {'class': article_class}):
-        corpus.append("Article : {}".format(article.text.strip()))
+    headline = bsobj.find('h1', {'class': headline_class})
+    if headline:
+        corpus.append("Headline : {}".format(headline.text.strip()))
+
+    for article in bsobj.findAll('article', {'class': article_class}):
+        corpus.append(article.text.strip())
+
+    article_content = bsobj.find('div', {'class': article_class})
+    if article_content:
+        for paragraph in article_content.find_all('p'):
+            if ads in paragraph.text:
+                continue
+            corpus.append(paragraph.text.strip())
+
 
 # Task 4: Handle authentication or access restrictions
 # TODO: If required, handle authentication or access restrictions here
@@ -49,42 +66,50 @@ import requests
 # TODO: Test the web scraping function and validate the extracted data
 # Sports news URLs
 sports_url1 = "https://indianexpress.com/article/sports/tennis/novak-djokovic-ties-roger-federer-wimbledon-8828916/"
-sports_url2 = "https://mcdowellnews.com/sports/professional/djokovic-ties-federer-with-46-slam-semifinals-meets-sinner-next/article_af9d586a-2030-11ee-82e4-0b2a92280f49.html"
-
-# Scrape sports news
-scrape_website(sports_url1, 'native_story_title', 'story_details')
-scrape_website(sports_url2, 'headline', 'lee-article-text')
+sports_url2 = "https://www.nydailynews.com/sports/more-sports/ny-novak-djokovic-roger-federer-grand-slam-wimbledon-20230711-eyeiq4rnazc5lg2hkd5ykoi46u-story.html"
 
 # Technology news URLs
 tech_url1 = "https://indianexpress.com/article/technology/tech-news-technology/amazon-makes-first-big-tech-challenge-to-eu-online-content-rules-8829113/"
-tech_url2 = "https://economictimes.indiatimes.com/tech/technology/amazon-challenges-eu-online-content-rules-says-unfairly-singled-out/articleshow/101668958.cms"
-
-# Scrape technology news
-scrape_website(tech_url1, 'native_story_title', 'story_details')
-scrape_website(tech_url2, 'artTitle font_faus', 'article_wrap')
+tech_url2 = "https://www.reuters.com/technology/amazon-challenges-eu-online-content-rules-says-unfairly-singled-out-2023-07-11/"
 
 # Education news URLs
 edu_url1 = "https://indianexpress.com/article/education/aiims-proposes-to-quash-interview-for-phd-selection-8829283/"
 edu_url2 = "https://theprint.in/india/aiims-proposes-to-quash-interviews-in-phd-selection-process-for-greater-transparency/1665108/#google_vignette"
 
-# Scrape education news
-scrape_website(edu_url1, 'native_story_title', 'story_details')
-scrape_website(edu_url2, 'tdb-title-text', 'tdb-block-inner td-fix-index')
-
 # Political news URLs
 politics_url1 = "https://indianexpress.com/article/political-pulse/sc-prepares-article-370-pleas-look-major-parties-stand-8829676/"
-politics_url2 = "https://economictimes.indiatimes.com/news/india/sc-to-hear-pleas-challenging-article-370-abrogation-from-august-2/articleshow/101658010.cms"
+politics_url2 = "https://www.livemint.com/news/india/jammu-and-kashmir-sc-to-hear-batch-of-pleas-challenging-the-abrogation-of-article-370-from-august-2-11689053035450.html"
 
-# Scrape political news
-scrape_website(politics_url1, 'native_story_title', 'story_details')
-scrape_website(politics_url2, 'artTitle font_faus', 'pageContent flt')
+# Global news URLs
+global_url1 = "https://indianexpress.com/article/explained/explained-global/swedens-rocky-road-from-neutrality-toward-nato-membership-8827291/"
+global_url2 = "https://www.theweek.in/wire-updates/international/2023/07/11/fgn19-sweden-nato-explainer.html"
 
-#Global news URLs
-url1 = "https://indianexpress.com/article/explained/explained-global/swedens-rocky-road-from-neutrality-toward-nato-membership-8827291/"
-url2 = "https://www.theweek.in/wire-updates/international/2023/07/11/fgn19-sweden-nato-explainer.html"
+# Scrape and print sports news
+print("----- Sports News -----")
+scrape_website(sports_url1, 'native_story_title', 'full-details', "advertisement")
+scrape_website(sports_url2, 'primary-font__PrimaryFontStyles-o56yd5-0 gVBMpi headline', 'default__ArticleBody-sc-1wxyvyl-2 hEvcgL article-body-wrapper-custom', "Advertisement")
 
-scrape_website(url1, 'article-title', 'story_details')
-scrape_website(url2, 'article', 'pageContent flt')
+# Scrape and print technology news
+print("----- Technology News -----")
+scrape_website(tech_url1, 'native_story_title', 'full-details', "Advertisement")
+scrape_website(tech_url2, 'text__text__1FZLe text__dark-grey__3Ml43 text__medium__1kbOh text__heading_3__1kDhc heading__base__2T28j heading__heading_3__3aL54 article-header__title__3Y2hh', 'article-body__content__17Yit', "Advertisement")
+
+# Scrape and print education news
+print("----- Education News -----")
+scrape_website(edu_url1, 'native_story_title', 'full-details', "Advertisement")
+scrape_website(edu_url2, 'tdb-title-text', 'td-post-content', "Advertisement")
+
+# Scrape and print political news
+print("----- Political News -----")
+scrape_website(politics_url1, 'native_story_title', 'full-details', "Advertisement")
+scrape_website(politics_url2, 'headline', 'contentSec', "Advertisement")
+
+# Scrape and print global news
+print("----- Global News -----")
+scrape_website(global_url1, 'native_story_title', 'full-details', "Advertisement")
+scrape_website(global_url2, 'article-title', 'article', "")
+
+print(corpus)
 
 # Task 6: Document the web scraping process
 # TODO: Write a detailed documentation of the web scraping process and challenges faced
