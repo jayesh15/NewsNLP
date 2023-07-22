@@ -1,42 +1,8 @@
-# Team 1: Web Scraping
-# TODO: Import necessary libraries for web scraping
+#Team 1:
 
 import requests
 from bs4 import BeautifulSoup as soup
 
-# Task 1: Identify a suitable website for web scraping
-# Sports news URLs
-# Sports news URLs
-sports_url1 = "https://indianexpress.com/article/sports/tennis/novak-djokovic-ties-roger-federer-wimbledon-8828916/"
-sports_url2 = "https://www.nydailynews.com/sports/more-sports/ny-novak-djokovic-roger-federer-grand-slam-wimbledon-20230711-eyeiq4rnazc5lg2hkd5ykoi46u-story.html"
-
-# Technology news URLs
-tech_url1 = "https://indianexpress.com/article/technology/tech-news-technology/amazon-makes-first-big-tech-challenge-to-eu-online-content-rules-8829113/"
-tech_url2 = "https://www.reuters.com/technology/amazon-challenges-eu-online-content-rules-says-unfairly-singled-out-2023-07-11/"
-
-# Education news URLs
-edu_url1 = "https://indianexpress.com/article/education/aiims-proposes-to-quash-interview-for-phd-selection-8829283/"
-edu_url2 = "https://theprint.in/india/aiims-proposes-to-quash-interviews-in-phd-selection-process-for-greater-transparency/1665108/#google_vignette"
-
-# Political news URLs
-politics_url1 = "https://indianexpress.com/article/political-pulse/sc-prepares-article-370-pleas-look-major-parties-stand-8829676/"
-politics_url2 = "https://www.livemint.com/news/india/jammu-and-kashmir-sc-to-hear-batch-of-pleas-challenging-the-abrogation-of-article-370-from-august-2-11689053035450.html"
-
-# Global news URLs
-global_url1 = "https://indianexpress.com/article/explained/explained-global/swedens-rocky-road-from-neutrality-toward-nato-membership-8827291/"
-global_url2 = "https://www.theweek.in/wire-updates/international/2023/07/11/fgn19-sweden-nato-explainer.html"
-
-
-corpus=[]
-output=[]
-
-# Task 2: Research and select appropriate web scraping tools and libraries
-# TODO: Import web scraping libraries (e.g., BeautifulSoup, Scrapy)
-import requests
-from bs4 import BeautifulSoup as soup
-
-# Task 3: Develop a web scraping script
-# TODO: Write a function to scrape data from the chosen website
 corpus = []
 
 def scrape_website(url, headline_class, article_class, ads):
@@ -57,13 +23,6 @@ def scrape_website(url, headline_class, article_class, ads):
                 continue
             corpus.append(paragraph.text.strip())
 
-
-# Task 4: Handle authentication or access restrictions
-# TODO: If required, handle authentication or access restrictions here
-import requests
-
-# Task 5: Test and validate the web scraping script
-# TODO: Test the web scraping function and validate the extracted data
 # Sports news URLs
 sports_url1 = "https://indianexpress.com/article/sports/tennis/novak-djokovic-ties-roger-federer-wimbledon-8828916/"
 sports_url2 = "https://www.nydailynews.com/sports/more-sports/ny-novak-djokovic-roger-federer-grand-slam-wimbledon-20230711-eyeiq4rnazc5lg2hkd5ykoi46u-story.html"
@@ -109,7 +68,6 @@ print("----- Global News -----")
 scrape_website(global_url1, 'native_story_title', 'full-details', "Advertisement")
 scrape_website(global_url2, 'article-title', 'article', "")
 
-print(corpus)
 
 # Task 6: Document the web scraping process
 # TODO: Write a detailed documentation of the web scraping process and challenges faced
