@@ -2,25 +2,89 @@
 # TODO: Import necessary libraries for web scraping
 
 # Task 1: Identify a suitable website for web scraping
-website_url = "https://www.examplenewswebsite.com"
-corpus=['news']
+# Sports news URLs
+sports_url1 = "https://indianexpress.com/article/sports/tennis/novak-djokovic-ties-roger-federer-wimbledon-8828916/"
+sports_url2 = "https://mcdowellnews.com/sports/professional/djokovic-ties-federer-with-46-slam-semifinals-meets-sinner-next/article_af9d586a-2030-11ee-82e4-0b2a92280f49.html"
+
+# Technology news URLs
+tech_url1 = "https://indianexpress.com/article/technology/tech-news-technology/amazon-makes-first-big-tech-challenge-to-eu-online-content-rules-8829113/"
+tech_url2 = "https://economictimes.indiatimes.com/tech/technology/amazon-challenges-eu-online-content-rules-says-unfairly-singled-out/articleshow/101668958.cms"
+
+# Education news URLs
+edu_url1 = "https://indianexpress.com/article/education/aiims-proposes-to-quash-interview-for-phd-selection-8829283/"
+edu_url2 = "https://theprint.in/india/aiims-proposes-to-quash-interviews-in-phd-selection-process-for-greater-transparency/1665108/#google_vignette"
+
+# Political news URLs
+politics_url1 = "https://indianexpress.com/article/political-pulse/sc-prepares-article-370-pleas-look-major-parties-stand-8829676/"
+politics_url2 = "https://economictimes.indiatimes.com/news/india/sc-to-hear-pleas-challenging-article-370-abrogation-from-august-2/articleshow/101658010.cms"
+
+# Global news URLs
+url1 = "https://indianexpress.com/article/explained/explained-global/swedens-rocky-road-from-neutrality-toward-nato-membership-8827291/"
+url2 = "https://www.theweek.in/wire-updates/international/2023/07/11/fgn19-sweden-nato-explainer.html"
+
+corpus=[]
 output=[]
 
 # Task 2: Research and select appropriate web scraping tools and libraries
 # TODO: Import web scraping libraries (e.g., BeautifulSoup, Scrapy)
+import requests
+from bs4 import BeautifulSoup as soup
 
 # Task 3: Develop a web scraping script
 # TODO: Write a function to scrape data from the chosen website
+def scrape_website(url, headline_class, article_class):
+    html = requests.get(url)
+    bsobj = soup(html.content, 'lxml')
 
-def scrape_website(url):
-    # TODO: Implement web scraping logic here
-    pass
+    for headline in bsobj.findAll('h1', {'class': headline_class}): 
+      corpus.append("Headline : {}".format(headline.text))
+      for article in bsobj.findAll('div', {'class': article_class}):
+        corpus.append("Article : {}".format(article.text.strip()))
 
 # Task 4: Handle authentication or access restrictions
 # TODO: If required, handle authentication or access restrictions here
+import requests
 
 # Task 5: Test and validate the web scraping script
 # TODO: Test the web scraping function and validate the extracted data
+# Sports news URLs
+sports_url1 = "https://indianexpress.com/article/sports/tennis/novak-djokovic-ties-roger-federer-wimbledon-8828916/"
+sports_url2 = "https://mcdowellnews.com/sports/professional/djokovic-ties-federer-with-46-slam-semifinals-meets-sinner-next/article_af9d586a-2030-11ee-82e4-0b2a92280f49.html"
+
+# Scrape sports news
+scrape_website(sports_url1, 'native_story_title', 'story_details')
+scrape_website(sports_url2, 'headline', 'lee-article-text')
+
+# Technology news URLs
+tech_url1 = "https://indianexpress.com/article/technology/tech-news-technology/amazon-makes-first-big-tech-challenge-to-eu-online-content-rules-8829113/"
+tech_url2 = "https://economictimes.indiatimes.com/tech/technology/amazon-challenges-eu-online-content-rules-says-unfairly-singled-out/articleshow/101668958.cms"
+
+# Scrape technology news
+scrape_website(tech_url1, 'native_story_title', 'story_details')
+scrape_website(tech_url2, 'artTitle font_faus', 'article_wrap')
+
+# Education news URLs
+edu_url1 = "https://indianexpress.com/article/education/aiims-proposes-to-quash-interview-for-phd-selection-8829283/"
+edu_url2 = "https://theprint.in/india/aiims-proposes-to-quash-interviews-in-phd-selection-process-for-greater-transparency/1665108/#google_vignette"
+
+# Scrape education news
+scrape_website(edu_url1, 'native_story_title', 'story_details')
+scrape_website(edu_url2, 'tdb-title-text', 'tdb-block-inner td-fix-index')
+
+# Political news URLs
+politics_url1 = "https://indianexpress.com/article/political-pulse/sc-prepares-article-370-pleas-look-major-parties-stand-8829676/"
+politics_url2 = "https://economictimes.indiatimes.com/news/india/sc-to-hear-pleas-challenging-article-370-abrogation-from-august-2/articleshow/101658010.cms"
+
+# Scrape political news
+scrape_website(politics_url1, 'native_story_title', 'story_details')
+scrape_website(politics_url2, 'artTitle font_faus', 'pageContent flt')
+
+#Global news URLs
+url1 = "https://indianexpress.com/article/explained/explained-global/swedens-rocky-road-from-neutrality-toward-nato-membership-8827291/"
+url2 = "https://www.theweek.in/wire-updates/international/2023/07/11/fgn19-sweden-nato-explainer.html"
+
+scrape_website(url1, 'article-title', 'story_details')
+scrape_website(url2, 'article', 'pageContent flt')
 
 # Task 6: Document the web scraping process
 # TODO: Write a detailed documentation of the web scraping process and challenges faced
