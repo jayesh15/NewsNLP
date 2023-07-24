@@ -3,6 +3,9 @@
 import requests
 from bs4 import BeautifulSoup as soup
 
+#Sport News
+sports_url1 = "https://indianexpress.com/article/sports/tennis/novak-djokovic-ties-roger-federer-wimbledon-8828916/"
+
 corpus = []
 
 # Scraping Indian Express URL
@@ -48,11 +51,33 @@ for element in article.find_all(['p', 'figure']):
 
     corpus.append(element.text.strip())
 
-
 corpus
+
 
 # Technical News
  tech_url1 = "https://indianexpress.com/article/technology/tech-news-technology/amazon-makes-first-big-tech-challenge-to-eu-online-content-rules-8829113/"
+
+corpus = []
+
+# Scraping Indian Express URL
+html = requests.get(tech_url1)
+bsobj = soup(html.content, 'lxml')
+
+# Find and print the headline
+headline = bsobj.find('h1', {'class': 'native_story_title'})
+corpus.append("Headline: {}".format(headline.text.strip()))
+
+# Find and print the article content, excluding the advertisement
+article = bsobj.find('div', {'class': 'full-details'})
+for paragraph in article.find_all('p'):
+    # Check for the advertisement phrase and skip the paragraph if found
+    if "advertisement" in paragraph.text:
+        continue
+    corpus.append(paragraph.text.strip())
+
+corpus
+
+
 tech_url2 = "https://www.reuters.com/technology/amazon-challenges-eu-online-content-rules-says-unfairly-singled-out-2023-07-11/"
 
 corpus = []
@@ -125,6 +150,28 @@ corpus
 
 # Politics News
 politics_url1 = "https://indianexpress.com/article/political-pulse/sc-prepares-article-370-pleas-look-major-parties-stand-8829676/"
+
+corpus = []
+
+# Scraping Indian Express URL
+html = requests.get(politics_url1)
+bsobj = soup(html.content, 'lxml')
+
+# Find and print the headline
+headline = bsobj.find('h1', {'class': 'native_story_title'})
+corpus.append("Headline: {}".format(headline.text.strip()))
+
+# Find and print the article content, excluding the advertisement
+article = bsobj.find('div', {'class': 'full-details'})
+for paragraph in article.find_all('p'):
+    # Check for the advertisement phrase and skip the paragraph if found
+    if "advertisement" in paragraph.text:
+        continue
+    corpus.append(paragraph.text.strip())
+
+corpus
+
+
 politics_url2 = "https://www.livemint.com/news/india/jammu-and-kashmir-sc-to-hear-batch-of-pleas-challenging-the-abrogation-of-article-370-from-august-2-11689053035450.html"
 
 corpus = []
@@ -144,7 +191,6 @@ for paragraph in article.find_all('p'):
     if "advertisement" in paragraph.text:
         continue
     corpus.append(paragraph.text.strip())
-
 
 corpus
 
@@ -192,6 +238,7 @@ for paragraph in article.find_all(['p']):
         continue
     corpus.append(paragraph.text.strip())
 
+corpus
 
 # Task 6: Document the web scraping process
 # TODO: Write a detailed documentation of the web scraping process and challenges faced
