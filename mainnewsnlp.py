@@ -5,68 +5,192 @@ from bs4 import BeautifulSoup as soup
 
 corpus = []
 
-def scrape_website(url, headline_class, article_class, ads):
-    html = requests.get(url)
-    bsobj = soup(html.content, 'lxml')
+# Scraping Indian Express URL
+html = requests.get(sports_url1)
+bsobj = soup(html.content, 'lxml')
 
-    headline = bsobj.find('h1', {'class': headline_class})
-    if headline:
-        corpus.append("Headline : {}".format(headline.text.strip()))
+# Find and print the headline
+headline = bsobj.find('h1', {'class': 'native_story_title'})
+corpus.append("Headline: {}".format(headline.text.strip()))
 
-    for article in bsobj.findAll('article', {'class': article_class}):
-        corpus.append(article.text.strip())
+# Find and print the article content, excluding the advertisement
+article = bsobj.find('div', {'class': 'full-details'})
+for paragraph in article.find_all('p'):
+    # Check for the advertisement phrase and skip the paragraph if found
+    if "advertisement" in paragraph.text:
+        continue
+    corpus.append(paragraph.text.strip())
 
-    article_content = bsobj.find('div', {'class': article_class})
-    if article_content:
-        for paragraph in article_content.find_all('p'):
-            if ads in paragraph.text:
-                continue
-            corpus.append(paragraph.text.strip())
+corpus
 
-# Sports news URLs
-sports_url1 = "https://indianexpress.com/article/sports/tennis/novak-djokovic-ties-roger-federer-wimbledon-8828916/"
 sports_url2 = "https://www.nydailynews.com/sports/more-sports/ny-novak-djokovic-roger-federer-grand-slam-wimbledon-20230711-eyeiq4rnazc5lg2hkd5ykoi46u-story.html"
 
-# Technology news URLs
-tech_url1 = "https://indianexpress.com/article/technology/tech-news-technology/amazon-makes-first-big-tech-challenge-to-eu-online-content-rules-8829113/"
+corpus = []
+
+# Scraping NY Daily News URL
+html = requests.get(sports_url2)
+bsobj = soup(html.content, 'lxml')
+
+# Find and print the headline
+headline = bsobj.find('h1', {'class': 'primary-font__PrimaryFontStyles-o56yd5-0 gVBMpi headline'})
+corpus.append("Headline: {}".format(headline.text.strip()))
+
+# Find and print the article content, excluding the advertisement and text below the image
+article = bsobj.find('article', {'class': 'default__ArticleBody-sc-1wxyvyl-2 hEvcgL article-body-wrapper-custom'})
+for element in article.find_all(['p', 'figure']):
+    # Skip internal links
+    if element.find('a', href=True):
+        continue
+
+    # Check if the element contains the advertisement phrase and skip it
+    if "Get the latest odds on all the top sports" in element.text:
+        continue
+
+    corpus.append(element.text.strip())
+
+
+corpus
+
+# Technical News
+ tech_url1 = "https://indianexpress.com/article/technology/tech-news-technology/amazon-makes-first-big-tech-challenge-to-eu-online-content-rules-8829113/"
 tech_url2 = "https://www.reuters.com/technology/amazon-challenges-eu-online-content-rules-says-unfairly-singled-out-2023-07-11/"
 
-# Education news URLs
-edu_url1 = "https://indianexpress.com/article/education/aiims-proposes-to-quash-interview-for-phd-selection-8829283/"
-edu_url2 = "https://theprint.in/india/aiims-proposes-to-quash-interviews-in-phd-selection-process-for-greater-transparency/1665108/#google_vignette"
+corpus = []
 
-# Political news URLs
+# Scraping Reuters URL
+html = requests.get(tech_url2)
+bsobj = soup(html.content, 'lxml')
+
+# Find and print the headline
+headline = bsobj.find('h1', {'class': 'text__text__1FZLe text__dark-grey__3Ml43 text__medium__1kbOh text__heading_3__1kDhc heading__base__2T28j heading__heading_3__3aL54 article-header__title__3Y2hh'})
+corpus.append("Headline: {}".format(headline.text.strip()))
+
+# Find and print the article content, excluding the advertisements
+article = bsobj.find('div', {'class': 'article-body__content__17Yit'})
+for paragraph in article.find_all(['p']):
+    # Check for the advertisement phrase and skip the paragraph if found
+    if "advertisement" in paragraph.text:
+        continue
+    corpus.append(paragraph.text.strip())
+
+corpus
+
+
+# Education News
+education_url1 = "https://indianexpress.com/article/education/aiims-proposes-to-quash-interview-for-phd-selection-8829283/"
+
+corpus = []
+
+# Scraping Indian Express URL
+html = requests.get(education_url)
+bsobj = soup(html.content, 'lxml')
+
+# Find and print the headline
+headline = bsobj.find('h1', {'class': 'native_story_title'})
+corpus.append("Headline: {}".format(headline.text.strip()))
+
+# Find and print the article content, excluding the advertisement
+article = bsobj.find('div', {'class': 'full-details'})
+for paragraph in article.find_all('p'):
+    # Check for the advertisement phrase and skip the paragraph if found
+    if "advertisement" in paragraph.text:
+        continue
+    corpus.append(paragraph.text.strip())
+
+corpus
+
+
+education_url2 = "https://theprint.in/india/aiims-proposes-to-quash-interviews-in-phd-selection-process-for-greater-transparency/1665108/#google_vignette"
+
+corpus = []
+
+# Scraping Theprint URL
+html = requests.get(education_url2)
+bsobj = soup(html.content, 'lxml')
+
+# Find and print the headline
+headline = bsobj.find('h1', {'class': 'tdb-title-text'})
+corpus.append("Headline: {}".format(headline.text.strip()))
+
+# Find and print the article content, excluding the advertisement
+article = bsobj.find('div', {'class': 'td-post-content'})
+for paragraph in article.find_all('p'):
+    # Check for the advertisement phrase and skip the paragraph if found
+    if "advertisement" in paragraph.text:
+        continue
+    corpus.append(paragraph.text.strip())
+
+corpus
+
+
+# Politics News
 politics_url1 = "https://indianexpress.com/article/political-pulse/sc-prepares-article-370-pleas-look-major-parties-stand-8829676/"
 politics_url2 = "https://www.livemint.com/news/india/jammu-and-kashmir-sc-to-hear-batch-of-pleas-challenging-the-abrogation-of-article-370-from-august-2-11689053035450.html"
 
-# Global news URLs
+corpus = []
+
+# Scraping LiveMint URL
+html = requests.get(politics_url2)
+bsobj = soup(html.content, 'lxml')
+
+# Find and print the headline
+headline = bsobj.find('h1', {'class': 'headline'})
+corpus.append("Headline: {}".format(headline.text.strip()))
+
+# Find and print the article content, excluding the advertisement
+article = bsobj.find('div', {'class': 'contentSec'})
+for paragraph in article.find_all('p'):
+    # Check for the advertisement phrase and skip the paragraph if found
+    if "advertisement" in paragraph.text:
+        continue
+    corpus.append(paragraph.text.strip())
+
+
+corpus
+
+
+# Global News
 global_url1 = "https://indianexpress.com/article/explained/explained-global/swedens-rocky-road-from-neutrality-toward-nato-membership-8827291/"
-global_url2 = "https://www.theweek.in/wire-updates/international/2023/07/11/fgn19-sweden-nato-explainer.html"
 
-# Scrape and print sports news
-print("----- Sports News -----")
-scrape_website(sports_url1, 'native_story_title', 'full-details', "Advertisement")
-scrape_website(sports_url2, 'primary-font__PrimaryFontStyles-o56yd5-0 gVBMpi headline', 'default__ArticleBody-sc-1wxyvyl-2 hEvcgL article-body-wrapper-custom', "Advertisement")
+corpus = []
 
-# Scrape and print technology news
-print("----- Technology News -----")
-scrape_website(tech_url1, 'native_story_title', 'full-details', "Advertisement")
-scrape_website(tech_url2, 'text__text__1FZLe text__dark-grey__3Ml43 text__medium__1kbOh text__heading_3__1kDhc heading__base__2T28j heading__heading_3__3aL54 article-header__title__3Y2hh', 'article-body__content__17Yit', "Advertisement")
+# Scraping Indian Express URL
+html = requests.get(global_url1)
+bsobj = soup(html.content, 'lxml')
 
-# Scrape and print education news
-print("----- Education News -----")
-scrape_website(edu_url1, 'native_story_title', 'full-details', "Advertisement")
-scrape_website(edu_url2, 'tdb-title-text', 'td-post-content', "Advertisement")
+# Find and print the headline
+headline = bsobj.find('h1', {'class': 'native_story_title'})
+corpus.append("Headline: {}".format(headline.text.strip()))
 
-# Scrape and print political news
-print("----- Political News -----")
-scrape_website(politics_url1, 'native_story_title', 'full-details', "Advertisement")
-scrape_website(politics_url2, 'headline', 'contentSec', "Advertisement")
+# Find and print the article content, excluding the advertisement
+article = bsobj.find('div', {'class': 'full-details'})
+for paragraph in article.find_all('p'):
+    # Check for the advertisement phrase and skip the paragraph if found
+    if "advertisement" in paragraph.text:
+        continue
+    corpus.append(paragraph.text.strip())
 
-# Scrape and print global news
-print("----- Global News -----")
-scrape_website(global_url1, 'native_story_title', 'full-details', "Advertisement")
-scrape_website(global_url2, 'article-title', 'article', "")
+corpus
+
+global_url2 = "https://hindustannewshub.com/world-news/swedens-rocky-road-from-neutrality-toward-nato-membership/"
+
+corpus = []
+
+# Scraping Hindustan News URL
+html = requests.get(global_url2)
+bsobj = soup(html.content, 'lxml')
+
+# Find and print the headline
+headline = bsobj.find('h1', {'class': 'post-title entry-title'})
+corpus.append("Headline: {}".format(headline.text.strip()))
+
+# Find and print the article content, excluding the advertisements
+article = bsobj.find('div', {'class': 'entry-content entry clearfix'})
+for paragraph in article.find_all(['p']):
+    # Check for the advertisement phrase and skip the paragraph if found
+    if "advertisement" in paragraph.text:
+        continue
+    corpus.append(paragraph.text.strip())
 
 
 # Task 6: Document the web scraping process
