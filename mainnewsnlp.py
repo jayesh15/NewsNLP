@@ -55,7 +55,7 @@ corpus
 
 
 # Technical News
- tech_url1 = "https://indianexpress.com/article/technology/tech-news-technology/amazon-makes-first-big-tech-challenge-to-eu-online-content-rules-8829113/"
+tech_url1 = "https://indianexpress.com/article/technology/tech-news-technology/amazon-makes-first-big-tech-challenge-to-eu-online-content-rules-8829113/"
 
 corpus = []
 
@@ -107,7 +107,7 @@ education_url1 = "https://indianexpress.com/article/education/aiims-proposes-to-
 corpus = []
 
 # Scraping Indian Express URL
-html = requests.get(education_url)
+html = requests.get(education_url1)
 bsobj = soup(html.content, 'lxml')
 
 # Find and print the headline
@@ -323,3 +323,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+## This is Team 2 preprocessing branch
