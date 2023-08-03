@@ -2,6 +2,7 @@
 
 import requests
 from bs4 import BeautifulSoup as soup
+import emoji
 
 def corp_build(x):
   text=""
@@ -234,13 +235,66 @@ glo2 = corp_build(glo2)
 
 
 # Team 2: NLP Preprocessing
-# TODO: Import necessary libraries for NLP preprocessing
+# Building corpora of article of similar genre 
+sports_corp=[sports1,sports2]
+politics_corp = [pol1,pol2]
+education_corp = [edu1,edu2]
+global_corp = [glo1,glo2]
+tech_corp = [tech1,tech2]
 
-# Task 1: Implement data preprocessing pipeline
-# TODO: Write functions to perform each preprocessing step (lowercasing, punctuation removal, etc.)
+# Importing necessary libraries
+import nltk
+import string
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+import re
+import emoji
 
-# Task 2: Apply preprocessing pipeline to scraped data
-# TODO: Apply the preprocessing functions to the scraped data obtained by Team 1
+nltk.download('stopwords')
+nltk.download('punkt')
+nltk.download('wordnet')
+nltk.download('averaged_perceptron_tagger')
+
+# Preprocessing pipeline
+def text_preprocessing(corp):
+  processed_corp = []
+  for text in corp:
+    # Converts the text to lowercase
+    text = text.lower()
+
+    # Remove punctuation
+    text = text.translate(str.maketrans("","",string.punctuation))
+
+    # Remove numbers
+    text = "".join([i for i in text if not i.isdigit()])
+
+    # Remove stopwords
+    stop_words = set(stopwords.words('english'))
+    token = word_tokenize(text)
+    text = ' '.join([word for word in token if word not in stop_words])
+
+    # Strip extra whitespaces
+    text = ' '.join(text.split())
+
+    # Emoji Removing 
+    text = re.sub(r"(?:\@|http?\://|https?\://|www)\S+", '', text)  # Remove URLs
+    text = " ".join(text.split())
+    text = re.sub(r'#', '', text)  # Remove hashtags
+    text = re.sub(r'RT[\s]+', '', text)  # Remove RT
+
+    # Remove emojis
+    text = emoji.demojize(text)
+    text = re.sub(r':[a-zA-Z_]+:', '', text)
+
+    processed_corp.append(text)
+  return processed_corp
+
+# Processed corpus from similar genre
+sports = text_preprocessing(sports_corp)
+politics = text_preprocessing(politics_corp)
+education = text_preprocessing(education_corp)
+globe = text_preprocessing(global_corp)
+technology = text_preprocessing(tech_corp)
 
 # Task 3: Validate the effectiveness of preprocessing steps
 # TODO: Analyze sample data before and after preprocessing to validate the effectiveness
@@ -248,8 +302,6 @@ glo2 = corp_build(glo2)
 # Task 4: Document the preprocessing pipeline
 # TODO: Write a documentation explaining each step of the preprocessing pipeline and its purpose
 
-# Task 5: Explore different preprocessing techniques
-# TODO: Experiment with different preprocessing techniques and evaluate their impact on NLP tasks
 
 
 # Team 3: NLP Morphological Analysis and Tokenization
