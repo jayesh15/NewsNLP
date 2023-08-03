@@ -3,6 +3,17 @@
 import requests
 from bs4 import BeautifulSoup as soup
 import emoji
+import nltk
+import string
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+import re
+import emoji
+
+nltk.download('stopwords')
+nltk.download('punkt')
+nltk.download('wordnet')
+nltk.download('averaged_perceptron_tagger')
 
 def corp_build(x):
   text=""
@@ -242,19 +253,6 @@ education_corp = [edu1,edu2]
 global_corp = [glo1,glo2]
 tech_corp = [tech1,tech2]
 
-# Importing necessary libraries
-import nltk
-import string
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
-import re
-import emoji
-
-nltk.download('stopwords')
-nltk.download('punkt')
-nltk.download('wordnet')
-nltk.download('averaged_perceptron_tagger')
-
 # Preprocessing pipeline
 def text_preprocessing(corp):
   processed_corp = []
@@ -295,12 +293,6 @@ politics = text_preprocessing(politics_corp)
 education = text_preprocessing(education_corp)
 globe = text_preprocessing(global_corp)
 technology = text_preprocessing(tech_corp)
-
-# Task 3: Validate the effectiveness of preprocessing steps
-# TODO: Analyze sample data before and after preprocessing to validate the effectiveness
-
-# Task 4: Document the preprocessing pipeline
-# TODO: Write a documentation explaining each step of the preprocessing pipeline and its purpose
 
 
 
