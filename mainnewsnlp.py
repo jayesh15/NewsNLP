@@ -297,19 +297,291 @@ technology = text_preprocessing(tech_corp)
 
 
 # Team 3: NLP Morphological Analysis and Tokenization
-# TODO: Import necessary libraries for morphological analysis and tokenization
-
+# Team 3: NLP Morphological Analysis and Tokenization
+# TODO: Import necessary libraries for morphological analysis and tokenization 
+#task 1
 # Task 1: Implement word tokenization techniques
 # TODO: Write functions to perform different word tokenization techniques (whitespace, regex, etc.)
+
+
+import nltk
+from nltk.tokenize import word_tokenize, TweetTokenizer, TreebankWordTokenizer
+import sentencepiece as spm
+from tokenizers import ByteLevelBPETokenizer, SentencePieceBPETokenizer
+import re
+
+# whitespace tokenization function
+def whitespace_tokenize_corpus(corpus):
+    return [sentence.split() for sentence in corpus]
+
+# WordPunct tokenization function
+def wordpunct_tokenize_corpus(corpus):
+    return [nltk.wordpunct_tokenize(sentence) for sentence in corpus]
+
+#  Penn Treebank tokenization function
+def treebank_tokenize_corpus(corpus):
+    treebank_tokenizer = TreebankWordTokenizer()
+    return [treebank_tokenizer.tokenize(sentence) for sentence in corpus]
+
+#  Tweet tokenization function
+def tweet_tokenize_corpus(corpus):
+    tweet_tokenizer = TweetTokenizer()
+    return [tweet_tokenizer.tokenize(sentence) for sentence in corpus]
+
+#whitespace subword tokenization function
+def subword_tokenize_corpus(corpus):
+    return [sentence.split() for sentence in corpus]
+
+# corpora
+politics_corpus = politics
+
+technology_corpus = technology
+
+globe_corpus = globe
+
+education_corpus = education
+
+sports_corpus = sports
+
+#applying the tokenize techniques to corpora
+whitespace_tokenized_politics = whitespace_tokenize_corpus(politics_corpus)
+wordpunct_tokenized_politics = wordpunct_tokenize_corpus(politics_corpus)
+treebank_tokenized_politics = treebank_tokenize_corpus(politics_corpus)
+tweet_tokenized_politics = tweet_tokenize_corpus(politics_corpus)
+subword_tokenized_politics = subword_tokenize_corpus(politics_corpus)
+
+whitespace_tokenized_technology = whitespace_tokenize_corpus(technology_corpus)
+wordpunct_tokenized_technology = wordpunct_tokenize_corpus(technology_corpus)
+treebank_tokenized_technology = treebank_tokenize_corpus(technology_corpus)
+tweet_tokenized_technology = tweet_tokenize_corpus(technology_corpus)
+subword_tokenized_technology = subword_tokenize_corpus(technology_corpus)
+
+whitespace_tokenized_globe = whitespace_tokenize_corpus(globe_corpus)
+wordpunct_tokenized_globe = wordpunct_tokenize_corpus(globe_corpus)
+treebank_tokenized_globe = treebank_tokenize_corpus(globe_corpus)
+tweet_tokenized_globe = tweet_tokenize_corpus(globe_corpus)
+subword_tokenized_globe = subword_tokenize_corpus(globe_corpus)
+
+
+whitespace_tokenized_sports = whitespace_tokenize_corpus(sports_corpus)
+wordpunct_tokenized_sports = wordpunct_tokenize_corpus(sports_corpus)
+treebank_tokenized_sports = treebank_tokenize_corpus(sports_corpus)
+tweet_tokenized_sports = tweet_tokenize_corpus(sports_corpus)
+subword_tokenized_sports = subword_tokenize_corpus(sports_corpus)
+
+
+whitespace_tokenized_education = whitespace_tokenize_corpus(education_corpus)
+wordpunct_tokenized_education = wordpunct_tokenize_corpus(education_corpus)
+treebank_tokenized_education = treebank_tokenize_corpus(education_corpus)
+tweet_tokenized_education = tweet_tokenize_corpus(education_corpus)
+subword_tokenized_education = subword_tokenize_corpus(education_corpus)
+
+# Print results for corpus
+print("Whitespace Tokenization (Politics):", whitespace_tokenized_politics)
+print("WordPunct Tokenization (Politics):", wordpunct_tokenized_politics)
+print("Penn Treebank Tokenization (Politics):", treebank_tokenized_politics)
+print("Tweet Tokenization (Politics):", tweet_tokenized_politics)
+print("Whitespace Subword Tokenization (Politics):", subword_tokenized_politics)
+
+# Print results for technology corpus
+print("Whitespace Tokenization (Technology):", whitespace_tokenized_technology)
+print("WordPunct Tokenization (Technology):", wordpunct_tokenized_technology)
+print("Penn Treebank Tokenization (Technology):", treebank_tokenized_technology)
+print("Tweet Tokenization (Technology):", tweet_tokenized_technology)
+print("Whitespace Subword Tokenization (Technology):", subword_tokenized_technology)
+
 
 # Task 2: Apply sentence tokenization techniques
 # TODO: Write a function to apply sentence tokenization to segment text into sentences
 
+# task 2
+import nltk
+nltk.download('punkt')
+
+# Define a function
+def apply_sentence_tokenization_list(texts):
+    tokenized_sentences = []
+    for text in texts:
+        sentences = nltk.sent_tokenize(text)
+        tokenized_sentences.append(sentences)
+    return tokenized_sentences
+#corpora
+corpora = {
+    "technology": technology,
+    "sports": sports,
+    "politics": politics,
+    "education": education,
+    "globe": globe
+}
+
+# applying tokenize techniques
+tokenized_corpora = {}
+for corpus_name, corpus in corpora.items():
+    tokenized_sentences = apply_sentence_tokenization_list(corpus)
+    tokenized_corpora[corpus_name] = tokenized_sentences
+
+# Printing for each corpus 
+for corpus_name, sentences_list in tokenized_corpora.items():
+    print(f"Tokenized Sentences for {corpus_name.capitalize()} Corpus:")
+    for i, sentences in enumerate(sentences_list):
+        print(f"Text {i + 1}:")
+        for j, sentence in enumerate(sentences):
+            print(f"Sentence {j + 1}: {sentence}")
+x_technology = tokenized_corpora["technology"]
+x_sports = tokenized_corpora["sports"]
+x_politics = tokenized_corpora["politics"]
+print("x_politics",x_politics)
+x_education = tokenized_corpora["education"]
+x_globe = tokenized_corpora["globe"]
+
 # Task 3: Experiment with morphological analysis methods
 # TODO: Implement and evaluate different morphological analysis methods (stemming, lemmatization, etc.)
+# function for stemming and lemmatization
+from nltk.stem import PorterStemmer, WordNetLemmatizer
+from nltk.corpus import stopwords
+def apply_morphological_analysis(corpus):
+    stemmer = PorterStemmer()
+    lemmatizer = WordNetLemmatizer()
+    stop_words = set(stopwords.words("english"))
+
+    stemmed_corpus = []
+    lemmatized_corpus = []
+
+    for text in corpus:
+        words = nltk.word_tokenize(text)
+        stemmed_words = [stemmer.stem(word) for word in words if word.lower() not in stop_words]
+        lemmatized_words = [lemmatizer.lemmatize(word) for word in words if word.lower() not in stop_words]
+
+        stemmed_corpus.append(" ".join(stemmed_words))
+        lemmatized_corpus.append(" ".join(lemmatized_words))
+
+    return stemmed_corpus, lemmatized_corpus
+
+# corpora
+corpora = {
+    "technology": technology,
+    "sports": sports,
+    "politics": politics,
+    "education": education,
+    "globe" : globe
+}
+
+# Applying morphological analysis to each corpus
+stemmed_corpora = {}
+lemmatized_corpora = {}
+
+for corpus_name, corpus in corpora.items():
+    stemmed_corpora[corpus_name], lemmatized_corpora[corpus_name] = apply_morphological_analysis(corpus)
+
+# Printed the stemmed and lemmatized results for each corpus
+for corpus_name in corpora.keys():
+    print(f"Stemmed Corpus for {corpus_name.capitalize()}:")
+    for i, text in enumerate(stemmed_corpora[corpus_name]):
+        print(f"Text {i + 1}: {text}")
+
+    print(f"\nLemmatized Corpus for {corpus_name.capitalize()}:")
+    for i, text in enumerate(lemmatized_corpora[corpus_name]):
+        print(f"Text {i + 1}: {text}")
+
+
+stemmed_technology = stemmed_corpora["technology"]
+lemmatized_technology = lemmatized_corpora["technology"]
+
+stemmed_sports = stemmed_corpora["sports"]
+lemmatized_sports = lemmatized_corpora["sports"]
+
+stemmed_politics = stemmed_corpora["politics"]
+lemmatized_politics = lemmatized_corpora["politics"]
+
+stemmed_education = stemmed_corpora["education"]
+lemmatized_education = lemmatized_corpora["education"]
+
+stemmed_globe = stemmed_corpora["globe"]
+lemmatized_globe = lemmatized_corpora["globe"]
+
+
+
+
 
 # Task 4: Evaluate the performance of tokenization and morphological analysis techniques
 # TODO: Compare and document the performance and effectiveness of the implemented techniques
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
+# Creating an instance of CountVectorizer
+vectorizer = CountVectorizer()
+
+#preprocessed data for each corpus and technique
+
+corpora = {
+    "politics": {
+        "original": " ".join(politics),
+        "tokenized": " ".join(" ".join(doc) for doc in x_politics),
+        "stemmed": " ".join(stemmed_politics),
+        "lemmatized": " ".join(lemmatized_politics)
+    },
+    "sports": {
+        "original": " ".join(sports),
+        "tokenized": " ".join(" ".join(doc) for doc in x_sports),
+        "stemmed": " ".join(stemmed_sports),
+        "lemmatized": " ".join(lemmatized_sports)
+    },
+    "education": {
+        "original": " ".join(education),
+        "tokenized": " ".join(" ".join(doc) for doc in x_education),
+        "stemmed": " ".join(stemmed_education),
+        "lemmatized": " ".join(lemmatized_education)
+    },
+    "globe": {
+        "original": " ".join(globe),
+        "tokenized": " ".join(" ".join(doc) for doc in x_globe),
+        "stemmed": " ".join(stemmed_globe),
+        "lemmatized": " ".join(lemmatized_globe)
+    },
+    "technology": {
+        "original": " ".join(technology),
+        "tokenized": " ".join(" ".join(doc) for doc in x_technology),
+        "stemmed": " ".join(stemmed_technology),
+        "lemmatized": " ".join(lemmatized_technology)
+    }
+}
+
+def compare_bow_similarity(corpus_name, corpus_data):
+    print(f"Comparing bag-of-words representations for corpus: {corpus_name}")
+
+    # original and different technique data
+    original_corpus = corpus_data["original"]
+    tokenized_corpus = corpus_data["tokenized"]
+    stemmed_corpus = corpus_data["stemmed"]
+    lemmatized_corpus = corpus_data["lemmatized"]
+
+    # Combining all documents for fitting the vectorizer
+    all_documents = [original_corpus, tokenized_corpus , stemmed_corpus , lemmatized_corpus]
+
+    # Fiting the vectorizer on all documents
+    vectorizer.fit(all_documents)
+
+    # Transforming documents into bag-of-words representations
+    original_bow = vectorizer.transform([original_corpus])
+    tokenized_bow = vectorizer.transform([tokenized_corpus])
+    stemmed_bow = vectorizer.transform([stemmed_corpus])
+    lemmatized_bow = vectorizer.transform([lemmatized_corpus])
+
+    # Calculating cosine similarity between different techniques and the original data
+    print("Cosine Similarity Matrix for Tokenized:")
+    print(cosine_similarity(original_bow, tokenized_bow))
+
+    print("Cosine Similarity Matrix for Stemmed:")
+    print(cosine_similarity(original_bow, stemmed_bow))
+
+    print("Cosine Similarity Matrix for Lemmatized:")
+    print(cosine_similarity(original_bow, lemmatized_bow))
+
+    print("\n")
+
+# Comparing bag-of-words representations for each corpus and technique
+for corpus_name, corpus_data in corpora.items():
+    compare_bow_similarity(corpus_name, corpus_data)
 
 
 # Team 4: NLP Part of Speech Tagging and WordNet Analysis
