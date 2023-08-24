@@ -263,6 +263,11 @@ def text_preprocessing(corp):
     # Remove punctuation
     text = text.translate(str.maketrans("","",string.punctuation))
 
+    #Removal of punctuation present with different ASCII Code left out of string.punctuation
+    punc = ['“', "”", "’", "…", "‘", "—"]
+    for i in punc:
+      text = text.replace(i,"")
+
     # Remove numbers
     text = "".join([i for i in text if not i.isdigit()])
 
@@ -285,7 +290,8 @@ def text_preprocessing(corp):
     text = re.sub(r':[a-zA-Z_]+:', '', text)
 
     processed_corp.append(text)
-  return processed_corp
+    processed_text = " ".join([i for i in processed_corp])
+  return processed_text
 
 # Processed corpus from similar genre
 sports = text_preprocessing(sports_corp)
