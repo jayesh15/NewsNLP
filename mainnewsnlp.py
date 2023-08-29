@@ -294,11 +294,11 @@ def text_preprocessing(corp):
   return processed_text
 
 # Processed corpus from similar genre
-sports = text_preprocessing(sports_corp)
-politics = text_preprocessing(politics_corp)
-education = text_preprocessing(education_corp)
-globe = text_preprocessing(global_corp)
-technology = text_preprocessing(tech_corp)
+sports = [text_preprocessing(sports_corp)]
+politics = [text_preprocessing(politics_corp)]
+education = [text_preprocessing(education_corp)]
+globe = [text_preprocessing(global_corp)]
+technology = [text_preprocessing(tech_corp)]
 
 
 
@@ -592,21 +592,162 @@ for corpus_name, corpus_data in corpora.items():
 
 # Team 4: NLP Part of Speech Tagging and WordNet Analysis
 # TODO: Import necessary libraries for part of speech tagging and WordNet analysis
-
+from nltk.tag import pos_tag
+import spacy
+nlp_spacy = spacy.load('en_core_web_sm')
+from nltk.corpus import wordnet
+from textblob import Word
+from textblob import TextBlob
+from sklearn.feature_extraction.text import TfidfVectorizer
 # Task 1: Implement part of speech tagging
 # TODO: Write a function to perform part of speech tagging using NLTK, Spacy, or other libraries
+
+def pos_tagging(texts):
+    # NLTK
+    words_nltk = nltk.word_tokenize(text)
+    pos_tags_nltk = nltk.pos_tag(words_nltk)
+    # spaCy
+    doc_spacy = nlp_spacy(text)
+    pos_tags_spacy = [(token.text, token.pos_) for token in doc_spacy]
+    return pos_tags_nltk,pos_tags_spacy
 
 # Task 2: Apply POS tagging to preprocessed data
 # TODO: Apply the POS tagging function to the preprocessed data
 
+for category, data in corpora.items():
+    preprocessed_text = data["original"]
+    nltk_tag,spacy_tag=pos_tagging(preprocessed_text)
+    print(f'NLTK Tag for {category}',nltk_tag)
+    print(f'Spacy Tag for {category}',spacy_tag)
+    print()  # Separating line between categories
+
 # Task 3: Perform WordNet analysis
 # TODO: Utilize WordNet or similar resources for semantic analysis, synonym identification, etc.
+topics = corpora.keys()
+
+set_of_nltk_synonyms,set_of_tb_synonyms,set_of_nltk_hypernyms,set_of_tb_hypernyms={},{},{},{}
+for topic in topics:
+    sentence = corpora[topic]['lemmatized']
+    for word in sentence.split():
+        try:
+            #Getting the synonymns of the words
+            set_of_nltk_synonyms[word+'_synonyms']=set([syn.name()[:-5] for syn in wordnet.synsets(word)]) # Using the nltk library
+            set_of_tb_synonyms[word+'_synonyms'] = set([syn.name()[:-5] for syn in Word(word).get_synsets()]) # Using the textblob library
+            #Getting the hypernymns
+            set_of_nltk_hypernyms[word+'_hypernyms']= [[n.name()[:-5] for n in hyn.hypernyms()][0] for hyn in wordnet.synsets(word)] #Using the nltk library
+            set_of_tb_hypernyms[word+'_hypernyms'] = [[n.name()[:-5] for n in hyn.hypernyms()][0] for hyn in Word(word).get_synsets()] #Using the textblob library
+        except Exception as e:
+            continue
+print(set_of_nltk_synonyms)
+print(set_of_tb_synonyms)
+print(set_of_nltk_hypernyms)
+print(set_of_tb_hypernyms)
 
 # Task 4: Explore additional NLP libraries for POS tagging and WordNet analysis
 # TODO: Experiment with additional libraries (e.g., TextBlob, Pattern) and compare the results
+from textblob import TextBlob
+
+def pos_exp_tagging(text):
+    # TextBlob
+    blob = TextBlob(text)
+    pos_tags_textblob = blob.tags    
+    return pos_tags_textblob
+
+for category, data in corpora.items():
+    preprocessed_text = data["original"]
+    sports_blob_tag=pos_exp_tagging(preprocessed_text)
+    print(f'TextBlob Tag for {category}\n',sports_blob_tag)
+
+#Pattern cannot be used because 
+
+#TDM, DTM, TF-IDF
+tfidf=TfidfVectorizer()
+
+DTM_sports=vectorizer.fit_transform(lemmatized_sports)
+TDM_sports=DTM_sports.T
+TFIDF_sports=tfidf.fit_transform(lemmatized_sports)
+print('TDM for Sports\n',TDM_sports)
+print('DTM for Sports\n',DTM_sports)
+print('TF-IDF for Sports\n',TFIDF_sports)
+
+DTM_politics=vectorizer.fit_transform(lemmatized_politics)
+TDM_politics=DTM_politics.T
+TFIDF_politics=tfidf.fit_transform(lemmatized_politics)
+print('TDM for Politics\n',TDM_politics)
+print('DTM for Politics\n',DTM_politics)
+print('TF-IDF for Politics\n',TFIDF_politics)
+
+
+DTM_education=vectorizer.fit_transform(lemmatized_education)
+TDM_education=DTM_education.T
+TFIDF_education=tfidf.fit_transform(lemmatized_education)
+print('TDM for Education\n',TDM_education)
+print('DTM for Education\n',DTM_education)
+print('TF-IDF for Education\n',TFIDF_education)
+
+
+DTM_globe=vectorizer.fit_transform(lemmatized_globe)
+TDM_globe=DTM_globe.T
+TFIDF_globe=tfidf.fit_transform(lemmatized_globe)
+print('TDM for Globe\n',TDM_globe)
+print('DTM for Globe\n',DTM_globe)
+print('TF-IDF for Globe\n',TFIDF_globe)
+
+
+DTM_technology=vectorizer.fit_transform(lemmatized_technology)
+TDM_technology=DTM_technology.T
+TFIDF_technology=tfidf.fit_transform(lemmatized_technology)
+print('TDM for Technology\n',TDM_technology)
+print('DTM for Technology\n',DTM_technology)
+print('TF-IDF for Technology\n',TFIDF_technology)
 
 # Task 5: Document the findings of POS tagging and WordNet analysis
 # TODO: Write a documentation summarizing the accuracy of POS tagging and the usefulness of WordNet
+#POS TAGGING TEST
+text = "This is an example sentence for POS tagging."
+#NLTK TAGGING
+import nltk
+from nltk.tokenize import word_tokenize
+tokens = word_tokenize(text)
+nltk_pos_tags = nltk.pos_tag(tokens)
+print("NLTK POS Tags:", nltk_pos_tags)
+
+#SPACY TAGGING
+import spacy
+nlp = spacy.load("en_core_web_sm")
+doc = nlp(text)
+spacy_pos_tags = [(token.text, token.pos_) for token in doc]
+print("spaCy POS Tags:", spacy_pos_tags)
+
+#TEXTBLOB TAGGING
+blob = TextBlob(text)
+textblob_pos_tags = blob.tags
+print("TextBlob POS Tags:", textblob_pos_tags)
+
+correct_tags = [('This', 'DT'), ('is', 'VBZ'), ('an', 'DT'), ('example', 'NN'), ('sentence', 'NN'), ('for', 'IN'),
+                ('POS', 'NN'), ('tagging', 'NN')]
+
+#Calculate accuracy for NLTK
+nltk_correct_count = sum(1 for tag1, tag2 in zip(correct_tags, nltk_pos_tags) if tag1[1] == tag2[1])
+nltk_accuracy = nltk_correct_count / len(correct_tags)
+print("NLTK Accuracy:", nltk_accuracy)
+
+correct_tags=[('This', 'PRON'), ('is', 'AUX'), ('an', 'DET'), ('example', 'NOUN'), ('sentence', 'NOUN'),
+              ('for', 'ADP'), ('POS', 'PROPN'),
+              ('tagging', 'NOUN'), ('.', 'PUNCT')]
+
+#Calculate accuracy for spaCy
+spacy_correct_count = sum(1 for tag1, tag2 in zip(correct_tags, spacy_pos_tags) if tag1[1] == tag2[1])
+spacy_accuracy = spacy_correct_count / len(correct_tags)
+print("spaCy Accuracy:", spacy_accuracy)
+
+correct_tags = [('This', 'DT'), ('is', 'VBZ'), ('an', 'DT'), ('example', 'NN'), ('sentence', 'NN'), ('for', 'IN'),
+                ('POS', 'NN'), ('tagging', 'NN')]
+
+#Calculate accuracy of TextBlob
+textblob_correct_count = sum(1 for tag1, tag2 in zip(correct_tags, textblob_pos_tags) if tag1[1] == tag2[1])
+textblob_accuracy = textblob_correct_count / len(correct_tags)
+print("TextBlob Accuracy:", textblob_accuracy)
 
 
 # Team 5: NLP Data Visualization and Analysis
