@@ -290,8 +290,8 @@ def text_preprocessing(corp):
     text = re.sub(r':[a-zA-Z_]+:', '', text)
 
     processed_corp.append(text)
-    processed_text = " ".join([i for i in processed_corp])
-  return processed_text
+    
+  return processed_corp
 
 # Processed corpus from similar genre
 sports = [text_preprocessing(sports_corp)]
