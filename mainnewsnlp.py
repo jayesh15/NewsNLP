@@ -1,7 +1,6 @@
 #Team 1:
-
 import requests
-from bs4 import BeautifulSoup as soup
+from lxml import html
 
 def corp_build(x):
   text=""
@@ -9,225 +8,402 @@ def corp_build(x):
   return text
 
 
-#Sport News
-sports_url1 = "https://indianexpress.com/article/sports/tennis/novak-djokovic-ties-roger-federer-wimbledon-8828916/"
+# SPORTS NEWS 
+
+# Scraping News from Hindu URL
+
+sports_url1 = "https://www.thehindu.com/sport/cricket/asia-cup-2023-super-4-match-sri-lanka-vs-pakistan-in-colombo-on-september-14-2023/article67306703.ece"
 sports1 = []
 
-# Scraping Indian Express URL
-html = requests.get(sports_url1)
-bsobj = soup(html.content, 'lxml')
+# Send an HTTP GET request to the URL
+response = requests.get(sports_url1)
 
-# Find and print the headline
-headline = bsobj.find('h1', {'class': 'native_story_title'})
-sports1.append("Headline: {}".format(headline.text.strip()))
+# Check if the request was successful (status code 200)
+if response.status_code == 200:
+    # Parse the HTML content of the webpage
+    tree = html.fromstring(response.text)
 
-# Find and print the article content, excluding the advertisement
-article = bsobj.find('div', {'class': 'full-details'})
-for paragraph in article.find_all('p'):
-    # Check for the advertisement phrase and skip the paragraph if found
-    if "advertisement" in paragraph.text:
-        continue
-    sports1.append(paragraph.text)
+    headline_xpath = '/html/body/section[2]/div/div/div[1]/h1'
+
+    article_xpath = '/html/body/section[2]/div/div/div[1]/div[6]/p'
+
+    # Use XPath to extract the headline and article content
+    headline_elements = tree.xpath(headline_xpath)
+    article_elements = tree.xpath(article_xpath)
+
+    print("--------SPORTS NEWS-------")
+
+    # Print the extracted headline
+    for element in headline_elements:
+        print("Headline:", element.text_content())
+
+    # Print the word "Article" to indicate the start of the article
+    print("Article:")
+
+    # Append the extracted article content to the sports1 list
+    for element in article_elements:
+        sports1.append(element.text_content())
+
 sports1 = corp_build(sports1)
 
-sports_url2 = "https://www.nydailynews.com/sports/more-sports/ny-novak-djokovic-roger-federer-grand-slam-wimbledon-20230711-eyeiq4rnazc5lg2hkd5ykoi46u-story.html"
+# Print the concatenated article content
+print(sports1)
 
+# Scraping News from freepressjournal URL
+
+sports_url2 = "https://www.freepressjournal.in/sports/asia-cup-2023-kusal-mendis-charith-asalanka-shine-as-sri-lanka-beat-pakistan-in-last-ball-thriller-to-set-up-final-vs-india"
 sports2 = []
 
-# Scraping NY Daily News URL
-html = requests.get(sports_url2)
-bsobj = soup(html.content, 'lxml')
+# Send an HTTP GET request to the URL
+response = requests.get(sports_url2)
 
-# Find and print the headline
-headline = bsobj.find('h1', {'class': 'primary-font__PrimaryFontStyles-o56yd5-0 gVBMpi headline'})
-sports2.append("Headline: {}".format(headline.text.strip()))
+# Check if the request was successful (status code 200)
+if response.status_code == 200:
+    # Parse the HTML content of the webpage
+    tree = html.fromstring(response.text)
 
-# Find and print the article content, excluding the advertisement and text below the image
-article = bsobj.find('article', {'class': 'default__ArticleBody-sc-1wxyvyl-2 hEvcgL article-body-wrapper-custom'})
-for element in article.find_all(['p', 'figure']):
-    # Skip internal links
-    if element.find('a', href=True):
-        continue
+    headline_xpath = '/html/body/main/section/div/div[1]/h1'
 
-    # Check if the element contains the advertisement phrase and skip it
-    if "Get the latest odds on all the top sports" in element.text:
-        continue
+    article_xpath = '/html/body/main/section/div/div[2]/article/p'
 
-    sports2.append(element.text.strip())
+    # Use XPath to extract the headline and article content
+    headline_elements = tree.xpath(headline_xpath)
+    article_elements = tree.xpath(article_xpath)
+
+    # Print the extracted headline
+    for element in headline_elements:
+        print("Headline:", element.text_content())
+
+    # Print the word "Article" to indicate the start of the article
+    print("Article:")
+
+    # Append the extracted article content to the sports2 list
+    for element in article_elements:
+        sports2.append(element.text_content())
+
 sports2 = corp_build(sports2)
 
-# Technical News
-tech_url1 = "https://indianexpress.com/article/technology/tech-news-technology/amazon-makes-first-big-tech-challenge-to-eu-online-content-rules-8829113/"
+# Print the concatenated article content
+print(sports2)
 
+# TECHNICAL NEWS
+
+# Scraping News from Hans India URL
+
+tech_url1 = "https://www.thehansindia.com/technology/tech-news/elon-musk-finds-usb-type-c-charging-on-the-apple-iphone-15-amazing-822919"
 tech1 = []
 
-# Scraping Indian Express URL
-html = requests.get(tech_url1)
-bsobj = soup(html.content, 'lxml')
+# Send an HTTP GET request to the URL
+response = requests.get(tech_url1)
 
-# Find and print the headline
-headline = bsobj.find('h1', {'class': 'native_story_title'})
-tech1.append("Headline: {}".format(headline.text.strip()))
+# Check if the request was successful (status code 200)
+if response.status_code == 200:
+    # Parse the HTML content of the webpage
+    tree = html.fromstring(response.text)
 
-# Find and print the article content, excluding the advertisement
-article = bsobj.find('div', {'class': 'full-details'})
-for paragraph in article.find_all('p'):
-    # Check for the advertisement phrase and skip the paragraph if found
-    if "advertisement" in paragraph.text:
-        continue
-    tech1.append(paragraph.text.strip())
+    headline_xpath = '/html/body/div[7]/div[4]/div[1]/div[4]/div[1]/div/section[1]/div/div/div[1]/div[1]/div[2]/h1'
+
+    article_xpath = '/html/body/div[7]/div[4]/div[1]/div[4]/div[1]/div/section[1]/div/div/div[1]/div[4]/div/div[4]/div[1]/div/p'
+
+    # Use XPath to extract the headline and article content
+    headline_elements = tree.xpath(headline_xpath)
+    article_elements = tree.xpath(article_xpath)
+
+    print("--------TECHNICAL NEWS--------")
+
+    # Print the extracted headline
+    for element in headline_elements:
+        print("Headline:", element.text_content())
+
+    # Print the word "Article" to indicate the start of the article
+    print("Article:")
+
+    # Append the extracted article content to the tech1 list
+    for element in article_elements:
+        tech1.append(element.text_content())
+
 tech1 = corp_build(tech1)
 
-tech_url2 = "https://www.reuters.com/technology/amazon-challenges-eu-online-content-rules-says-unfairly-singled-out-2023-07-11/"
+# Print the concatenated article content
+print(tech1)
 
+# Scraping News from Investing.com 
+
+tech_url2 = "https://www.investing.com/news/stock-market-news/apple-adopts-usb-typec-for-iphone-15-series-elon-musk-lauds-decision-93CH-3175191"
 tech2 = []
 
-# Scraping Reuters URL
-html = requests.get(tech_url2)
-bsobj = soup(html.content, 'lxml')
+# Send an HTTP GET request to the URL
+response = requests.get(tech_url2)
 
-# Find and print the headline
-headline = bsobj.find('h1', {'class': 'text__text__1FZLe text__dark-grey__3Ml43 text__medium__1kbOh text__heading_3__1kDhc heading__base__2T28j heading__heading_3__3aL54 article-header__title__3Y2hh'})
-tech2.append("Headline: {}".format(headline.text.strip()))
+# Check if the request was successful (status code 200)
+if response.status_code == 200:
+    # Parse the HTML content of the webpage
+    tree = html.fromstring(response.text)
 
-# Find and print the article content, excluding the advertisements
-article = bsobj.find('div', {'class': 'article-body__content__17Yit'})
-for paragraph in article.find_all(['p']):
-    # Check for the advertisement phrase and skip the paragraph if found
-    if "advertisement" in paragraph.text:
-        continue
-    tech2.append(paragraph.text.strip())
+    headline_xpath = '/html/body/div[6]/section/h1'
+
+    article_xpath = '/html/body/div[6]/section/div[5]/p'
+
+    # Use XPath to extract the headline and article content
+    headline_elements = tree.xpath(headline_xpath)
+    article_elements = tree.xpath(article_xpath)
+
+    # Print the extracted headline
+    for element in headline_elements:
+        print("Headline:", element.text_content())
+
+    # Print the word "Article" to indicate the start of the article
+    print("Article:")
+
+    # Append the extracted article content to the tech2 list
+    for element in article_elements:
+        tech2.append(element.text_content())
+
 tech2 = corp_build(tech2)
 
+# Print the concatenated article content
+print(tech2)
 
-# Education News
-education_url1 = "https://indianexpress.com/article/education/aiims-proposes-to-quash-interview-for-phd-selection-8829283/"
+# BUSINESS NEWS
 
-edu1 = []
+# Scraping News from India Today URL
 
-# Scraping Indian Express URL
-html = requests.get(education_url1)
-bsobj = soup(html.content, 'lxml')
+business_url1 = "https://www.indiatoday.in/business/story/gucci-louis-vuitton-to-expand-in-india-with-new-outlets-in-reliances-luxury-mall-2436090-2023-09-15"
+business1 = []
 
-# Find and print the headline
-headline = bsobj.find('h1', {'class': 'native_story_title'})
-edu1.append("Headline: {}".format(headline.text.strip()))
+# Send an HTTP GET request to the URL
+response = requests.get(business_url1)
 
-# Find and print the article content, excluding the advertisement
-article = bsobj.find('div', {'class': 'full-details'})
-for paragraph in article.find_all('p'):
-    # Check for the advertisement phrase and skip the paragraph if found
-    if "advertisement" in paragraph.text:
-        continue
-    edu1.append(paragraph.text.strip())
-edu1 = corp_build(edu1)
+# Check if the request was successful (status code 200)
+if response.status_code == 200:
+    # Parse the HTML content of the webpage
+    tree = html.fromstring(response.text)
 
-education_url2 = "https://theprint.in/india/aiims-proposes-to-quash-interviews-in-phd-selection-process-for-greater-transparency/1665108/#google_vignette"
+    headline_xpath = '/html/body/div[1]/div[3]/div/div/div[2]/main/div/div[1]/h1'
 
-edu2 = []
+    article_xpath = '/html/body/div[1]/div[3]/div/div/div[2]/main/div/div[1]/div[6]/div[1]'
 
-# Scraping Theprint URL
-html = requests.get(education_url2)
-bsobj = soup(html.content, 'lxml')
+    # Use XPath to extract the headline and article content
+    headline_elements = tree.xpath(headline_xpath)
+    article_elements = tree.xpath(article_xpath)
 
-# Find and print the headline
-headline = bsobj.find('h1', {'class': 'tdb-title-text'})
-edu2.append("Headline: {}".format(headline.text.strip()))
+    print("--------BUSINESS NEWS--------")
 
-# Find and print the article content, excluding the advertisement
-article = bsobj.find('div', {'class': 'td-post-content'})
-for paragraph in article.find_all('p'):
-    # Check for the advertisement phrase and skip the paragraph if found
-    if "advertisement" in paragraph.text:
-        continue
-    edu2.append(paragraph.text.strip())
-edu2 = corp_build(edu2)
+    # Print the extracted headline
+    for element in headline_elements:
+        print("Headline:", element.text_content())
+
+    # Print the word "Article" to indicate the start of the article
+    print("Article:")
+
+    # Append the extracted article content to the business1 list
+    for element in article_elements:
+        business1.append(element.text_content())
+
+business1 = corp_build(business1)
+
+# Print the concatenated article content
+print(business1)
+
+# Scraping News from Reuters URL 
+
+business_url2 = "https://www.reuters.com/business/retail-consumer/lvmh-gucci-expand-india-with-new-outlets-reliances-luxury-mall-2023-09-15/"
+
+business2 = []
+
+# Send an HTTP GET request to the URL
+response = requests.get(business_url2)
+
+# Check if the request was successful (status code 200)
+if response.status_code == 200:
+    # Parse the HTML content of the webpage
+    tree = html.fromstring(response.text)
+
+    headline_xpath = '/html/body/div[1]/div[3]/div/main/article/div[1]/div/header/div/div/h1'
+
+    article_xpath = '/html/body/div[1]/div[3]/div/main/article/div[1]/div/div/div/div[2]/p'
+
+    # Use XPath to extract the headline and article content
+    headline_elements = tree.xpath(headline_xpath)
+    article_elements = tree.xpath(article_xpath)
+
+    # Print the extracted headline
+    for element in headline_elements:
+        print("Headline:", element.text_content())
+
+    # Print the word "Article" to indicate the start of the article
+    print("Article:")
+
+    # Append the extracted article content to the business2 list
+    for element in article_elements:
+        business2.append(element.text_content())
+
+business2 = corp_build(business2)
+
+# Print the concatenated article content
+print(business2)
 
 
-# Politics News
-politics_url1 = "https://indianexpress.com/article/political-pulse/sc-prepares-article-370-pleas-look-major-parties-stand-8829676/"
-pol1 = []
+# HEALTH NEWS
 
-# Scraping Indian Express URL
-html = requests.get(politics_url1)
-bsobj = soup(html.content, 'lxml')
+# Scraping News from Reuters URL
 
-# Find and print the headline
-headline = bsobj.find('h1', {'class': 'native_story_title'})
-pol1.append("Headline: {}".format(headline.text.strip()))
+health_url1 = "https://www.reuters.com/business/healthcare-pharmaceuticals/highly-mutated-covid-variant-found-new-countries-pandemic-a-different-phase-2023-08-24/"
 
-# Find and print the article content, excluding the advertisement
-article = bsobj.find('div', {'class': 'full-details'})
-for paragraph in article.find_all('p'):
-    # Check for the advertisement phrase and skip the paragraph if found
-    if "advertisement" in paragraph.text:
-        continue
-    pol1.append(paragraph.text.strip())
-pol1=corp_build(pol1)
+health1 = []
 
-politics_url2 = "https://www.livemint.com/news/india/jammu-and-kashmir-sc-to-hear-batch-of-pleas-challenging-the-abrogation-of-article-370-from-august-2-11689053035450.html"
+# Send an HTTP GET request to the URL
+response = requests.get(health_url1)
 
-pol2 = []
+# Check if the request was successful (status code 200)
+if response.status_code == 200:
+    # Parse the HTML content of the webpage
+    tree = html.fromstring(response.text)
 
-# Scraping LiveMint URL
-html = requests.get(politics_url2)
-bsobj = soup(html.content, 'lxml')
+    headline_xpath = '/html/body/div[1]/div[3]/div/main/article/div[1]/div/header/div/div/h1'
 
-# Find and print the headline
-headline = bsobj.find('h1', {'class': 'headline'})
-pol2.append("Headline: {}".format(headline.text.strip()))
+    article_xpath = '/html/body/div[1]/div[3]/div/main/article/div[1]/div/div/div/div/p'
 
-# Find and print the article content, excluding the advertisement
-article = bsobj.find('div', {'class': 'contentSec'})
-for paragraph in article.find_all('p'):
-    # Check for the advertisement phrase and skip the paragraph if found
-    if "advertisement" in paragraph.text:
-        continue
-    pol2.append(paragraph.text.strip())
-pol2= corp_build(pol2)
+    # Use XPath to extract the headline and article content
+    headline_elements = tree.xpath(headline_xpath)
+    article_elements = tree.xpath(article_xpath)
 
-# Global News
-global_url1 = "https://indianexpress.com/article/explained/explained-global/swedens-rocky-road-from-neutrality-toward-nato-membership-8827291/"
+    print("--------HEALTH NEWS--------")
 
-glo1 = []
+    # Print the extracted headline
+    for element in headline_elements:
+        print("Headline:", element.text_content())
 
-# Scraping Indian Express URL
-html = requests.get(global_url1)
-bsobj = soup(html.content, 'lxml')
+    # Print the word "Article" to indicate the start of the article
+    print("Article:")
 
-# Find and print the headline
-headline = bsobj.find('h1', {'class': 'native_story_title'})
-glo1.append("Headline: {}".format(headline.text.strip()))
+    # Append the extracted article content to the health1 list
+    for element in article_elements:
+        health1.append(element.text_content())
 
-# Find and print the article content, excluding the advertisement
-article = bsobj.find('div', {'class': 'full-details'})
-for paragraph in article.find_all('p'):
-    # Check for the advertisement phrase and skip the paragraph if found
-    if "advertisement" in paragraph.text:
-        continue
-    glo1.append(paragraph.text.strip())
-glo1 = corp_build(glo1)
+health1 = corp_build(health1)
 
-global_url2 = "https://hindustannewshub.com/world-news/swedens-rocky-road-from-neutrality-toward-nato-membership/"
+# Print the concatenated article content
+print(health1)
 
-glo2 = []
+# Scraping News from Business Today URL
 
-# Scraping Hindustan News URL
-html = requests.get(global_url2)
-bsobj = soup(html.content, 'lxml')
+health_url2 = "https://www.businesstoday.in/latest/world/story/highly-mutated-covid-variant-found-in-new-countries-but-pandemic-in-a-different-phase-395557-2023-08-25"
 
-# Find and print the headline
-headline = bsobj.find('h1', {'class': 'post-title entry-title'})
-glo2.append("Headline: {}".format(headline.text.strip()))
+health2 = []
 
-# Find and print the article content, excluding the advertisements
-article = bsobj.find('div', {'class': 'entry-content entry clearfix'})
-for paragraph in article.find_all(['p']):
-    # Check for the advertisement phrase and skip the paragraph if found
-    if "advertisement" in paragraph.text:
-        continue
-    glo2.append(paragraph.text.strip())
-glo2 = corp_build(glo2)
+# Send an HTTP GET request to the URL
+response = requests.get(health_url2)
+
+# Check if the request was successful (status code 200)
+if response.status_code == 200:
+    # Parse the HTML content of the webpage
+    tree = html.fromstring(response.text)
+
+    headline_xpath = '/html/body/div[10]/div/div[1]/div[2]/h1'
+
+    article_xpath = '/html/body/div[10]/div/div[1]/div[9]/div/div/p'
+
+    # Use XPath to extract the headline and article content
+    headline_elements = tree.xpath(headline_xpath)
+    article_elements = tree.xpath(article_xpath)
+
+    # Print the extracted headline
+    for element in headline_elements:
+        print("Headline:", element.text_content())
+
+    # Print the word "Article" to indicate the start of the article
+    print("Article:")
+
+    # Append the extracted article content to the health2 list
+    for element in article_elements:
+        health2.append(element.text_content())
+
+health2 = corp_build(health2)
+
+# Print the concatenated article content
+print(health2)
+
+# GLOBAL NEWS
+
+# Scraping News from NEWS DRUM URL
+
+global_url1 = "https://www.newsdrum.in/international/libya-seals-off-flooded-city-so-searchers-can-look-for-10000-missing-after-death-toll-passes-11000-1346077"
+
+global1 = []
+
+# Send an HTTP GET request to the URL
+response = requests.get(global_url1)
+
+# Check if the request was successful (status code 200)
+if response.status_code == 200:
+    # Parse the HTML content of the webpage
+    tree = html.fromstring(response.text)
+
+    headline_xpath = '/html/body/div[1]/main/div/div[2]/article/div/div[1]/div/div[2]/section[1]'
+
+    article_xpath = '/html/body/div[1]/main/div/div[2]/article/div/div[1]/div/div[2]/section[2]/div[2]/div[1]/p'
+
+    # Use XPath to extract the headline and article content
+    headline_elements = tree.xpath(headline_xpath)
+    article_elements = tree.xpath(article_xpath)
+
+    print("--------GLOBAL NEWS--------")
+
+    # Print the extracted headline
+    for element in headline_elements:
+        print("Headline:", element.text_content())
+
+    # Print the word "Article" to indicate the start of the article
+    print("Article:")
+
+    # Append the extracted article content to the global1 list
+    for element in article_elements:
+        global1.append(element.text_content())
+
+global1 = corp_build(global1)
+
+# Print the concatenated article content
+print(global1)
+
+# Scraping News from HINDU URL
+
+global_url2 = "https://www.thehindu.com/news/international/libya-seals-off-flooded-city-so-searchers-can-look-for-10000-missing-after-death-toll-passes-11000/article67311339.ece"
+
+global2 = []
+
+# Send an HTTP GET request to the URL
+response = requests.get(global_url2)
+
+# Check if the request was successful (status code 200)
+if response.status_code == 200:
+    # Parse the HTML content of the webpage
+    tree = html.fromstring(response.text)
+
+    headline_xpath = '/html/body/section[2]/div/div/div[1]/h1'
+
+    article_xpath = '/html/body/section[2]/div/div/div[1]/div[6]/p'
+
+    # Use XPath to extract the headline and article content
+    headline_elements = tree.xpath(headline_xpath)
+    article_elements = tree.xpath(article_xpath)
+
+    # Print the extracted headline
+    for element in headline_elements:
+        print("Headline:", element.text_content())
+
+    # Print the word "Article" to indicate the start of the article
+    print("Article:")
+
+    # Append the extracted article content to the global2 list
+    for element in article_elements:
+        global2.append(element.text_content())
+
+global2 = corp_build(global2)
+
+# Print the concatenated article content
+print(global2)
+
 
 # Task 6: Document the web scraping process
 # TODO: Write a detailed documentation of the web scraping process and challenges faced
