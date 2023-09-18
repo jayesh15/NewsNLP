@@ -1,6 +1,17 @@
 #Team 1:
 import requests
 from lxml import html
+import nltk
+import string
+import emoji
+import re
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+
+nltk.download('stopwords')
+nltk.download('punkt')
+nltk.download('wordnet')
+nltk.download('averaged_perceptron_tagger')
 
 def corp_build(x):
   text=""
@@ -412,9 +423,9 @@ print(global2)
 # Team 2: NLP Preprocessing
 # Building corpora of article of similar genre 
 sports_corp=[sports1,sports2]
-politics_corp = [pol1,pol2]
-education_corp = [edu1,edu2]
-global_corp = [glo1,glo2]
+business_corp = [business1,business2]
+health_corp = [health1,health2]
+global_corp = [global1,global2]
 tech_corp = [tech1,tech2]
 
 # Preprocessing pipeline
@@ -453,14 +464,13 @@ def text_preprocessing(corp):
     text = emoji.demojize(text)
     text = re.sub(r':[a-zA-Z_]+:', '', text)
 
-    processed_corp.append(text)
-    
+    processed_corp.append(text) 
   return processed_corp
 
 # Processed corpus from similar genre
 sports = text_preprocessing(sports_corp)
-politics = text_preprocessing(politics_corp)
-education = text_preprocessing(education_corp)
+business = text_preprocessing(business_corp)
+health = text_preprocessing(health_corp)
 globe = text_preprocessing(global_corp)
 technology = text_preprocessing(tech_corp)
 
