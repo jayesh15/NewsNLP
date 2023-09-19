@@ -477,7 +477,6 @@ technology = text_preprocessing(tech_corp)
 
 
 # Team 3: NLP Morphological Analysis and Tokenization
-# Team 3: NLP Morphological Analysis and Tokenization
 # TODO: Import necessary libraries for morphological analysis and tokenization 
 #task 1
 # Task 1: Implement word tokenization techniques
@@ -521,22 +520,22 @@ def subword_tokenize_corpus(corpus):
     return [sentence.split() for sentence in corpus]
 
 # corpora
-politics_corpus = politics
+business_corpus = business
 
 technology_corpus = technology
 
 globe_corpus = globe
 
-education_corpus = education
+health_corpus = health
 
 sports_corpus = sports
 
 #applying the tokenize techniques to corpora
-whitespace_tokenized_politics = whitespace_tokenize_corpus(politics_corpus)
-wordpunct_tokenized_politics = wordpunct_tokenize_corpus(politics_corpus)
-treebank_tokenized_politics = treebank_tokenize_corpus(politics_corpus)
-tweet_tokenized_politics = tweet_tokenize_corpus(politics_corpus)
-subword_tokenized_politics = subword_tokenize_corpus(politics_corpus)
+whitespace_tokenized_business = whitespace_tokenize_corpus(business_corpus)
+wordpunct_tokenized_business = wordpunct_tokenize_corpus(business_corpus)
+treebank_tokenized_business= treebank_tokenize_corpus(business_corpus)
+tweet_tokenized_business = tweet_tokenize_corpus(business_corpus)
+subword_tokenized_business = subword_tokenize_corpus(business_corpus)
 
 whitespace_tokenized_technology = whitespace_tokenize_corpus(technology_corpus)
 wordpunct_tokenized_technology = wordpunct_tokenize_corpus(technology_corpus)
@@ -558,18 +557,18 @@ tweet_tokenized_sports = tweet_tokenize_corpus(sports_corpus)
 subword_tokenized_sports = subword_tokenize_corpus(sports_corpus)
 
 
-whitespace_tokenized_education = whitespace_tokenize_corpus(education_corpus)
-wordpunct_tokenized_education = wordpunct_tokenize_corpus(education_corpus)
-treebank_tokenized_education = treebank_tokenize_corpus(education_corpus)
-tweet_tokenized_education = tweet_tokenize_corpus(education_corpus)
-subword_tokenized_education = subword_tokenize_corpus(education_corpus)
+whitespace_tokenized_health = whitespace_tokenize_corpus(health_corpus)
+wordpunct_tokenized_health = wordpunct_tokenize_corpus(health_corpus)
+treebank_tokenized_health  = treebank_tokenize_corpus(health_corpus)
+tweet_tokenized_health  = tweet_tokenize_corpus(health_corpus)
+subword_tokenized_health  = subword_tokenize_corpus(health_corpus)
 
 # Print results for corpus
-print("Whitespace Tokenization (Politics):", whitespace_tokenized_politics)
-print("WordPunct Tokenization (Politics):", wordpunct_tokenized_politics)
-print("Penn Treebank Tokenization (Politics):", treebank_tokenized_politics)
-print("Tweet Tokenization (Politics):", tweet_tokenized_politics)
-print("Whitespace Subword Tokenization (Politics):", subword_tokenized_politics)
+print("Whitespace Tokenization (Politics):", whitespace_tokenized_business)
+print("WordPunct Tokenization (Politics):", wordpunct_tokenized_business)
+print("Penn Treebank Tokenization (Politics):", treebank_tokenized_business)
+print("Tweet Tokenization (Politics):", tweet_tokenized_business)
+print("Whitespace Subword Tokenization (Politics):", subword_tokenized_business)
 
 # Print results for technology corpus
 print("Whitespace Tokenization (Technology):", whitespace_tokenized_technology)
@@ -610,8 +609,8 @@ def apply_morphological_analysis(corpus):
 corpora = {
     "technology": technology,
     "sports": sports,
-    "politics": politics,
-    "education": education,
+    "business": business,
+    "health": health,
     "globe" : globe
 }
 
@@ -639,11 +638,11 @@ lemmatized_technology = lemmatized_corpora["technology"]
 stemmed_sports = stemmed_corpora["sports"]
 lemmatized_sports = lemmatized_corpora["sports"]
 
-stemmed_politics = stemmed_corpora["politics"]
-lemmatized_politics = lemmatized_corpora["politics"]
+stemmed_politics = stemmed_corpora["business"]
+lemmatized_politics = lemmatized_corpora["business"]
 
-stemmed_education = stemmed_corpora["education"]
-lemmatized_education = lemmatized_corpora["education"]
+stemmed_education = stemmed_corpora["health"]
+lemmatized_education = lemmatized_corpora["health"]
 
 stemmed_globe = stemmed_corpora["globe"]
 lemmatized_globe = lemmatized_corpora["globe"]
@@ -656,9 +655,9 @@ lemmatized_globe = lemmatized_corpora["globe"]
 nltk.download('punkt')
 
 # document for different corpora
-corpus_politics = politics
+corpus_business = business
 corpus_sports = sports
-corpus_education = education
+corpus_health = health
 corpus_globe = globe
 corpus_technology = technology
 
@@ -672,10 +671,10 @@ from sklearn.metrics.pairwise import cosine_similarity
 nltk.download('punkt')
 
 # Define your documents for different corpora
-corpus_politics = politics
+corpus_business = business
 corpus_technology = technology
 corpus_globe = globe
-corpus_education = education
+corpus_health = health
 corpus_sports = sports
 
 import nltk
@@ -687,10 +686,10 @@ from sklearn.metrics.pairwise import cosine_similarity
 nltk.download('punkt')
 
 # Define your documents for different corpora
-corpus_politics = politics
+corpus_business = business
 corpus_technology = technology
 corpus_globe = globe
-corpus_education = education
+corpus_health =health
 corpus_sports = sports
 
 from sklearn.feature_extraction.text import CountVectorizer
@@ -702,14 +701,14 @@ def create_count_matrix(documents):
     return count_matrix
 
 # Create a count matrix for each corpus
-count_matrix_politics = create_count_matrix(corpus_politics)
+count_matrix_politics = create_count_matrix(corpus_business)
 count_matrix_technology = create_count_matrix(corpus_technology)
 count_matrix_sports = create_count_matrix(corpus_sports)
 count_matrix_globe = create_count_matrix(corpus_globe)
-count_matrix_education = create_count_matrix(corpus_education)
+count_matrix_education = create_count_matrix(corpus_health)
 
 # Print the count matrices
-print("Count Matrix (Politics):")
+print("Count Matrix (business):")
 print(count_matrix_politics.toarray())
 
 print("Count Matrix (Technology):")
@@ -718,13 +717,11 @@ print(count_matrix_technology.toarray())
 print("Count Matrix (sports):")
 print(count_matrix_sports.toarray())
 
-print("Count Matrix (education):")
+print("Count Matrix (health):")
 print(count_matrix_education.toarray())
 
 print("Count Matrix (globe):")
 print(count_matrix_globe.toarray())
-
-
 
 
 # Team 4: NLP Part of Speech Tagging and WordNet Analysis
