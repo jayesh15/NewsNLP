@@ -8,10 +8,10 @@ import re
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 
-nltk.download('stopwords')
-nltk.download('punkt')
-nltk.download('wordnet')
-nltk.download('averaged_perceptron_tagger')
+#nltk.download('stopwords')
+#nltk.download('punkt')
+#nltk.download('wordnet')
+#nltk.download('averaged_perceptron_tagger')
 
 def corp_build(x):
   text=""
@@ -652,7 +652,7 @@ lemmatized_globe = lemmatized_corpora["globe"]
 # Task 4: Evaluate the performance of tokenization and morphological analysis techniques
 # TODO: Compare and document the performance and effectiveness of the implemented techniques
 # Ensure you have downloaded NLTK data
-nltk.download('punkt')
+#nltk.download('punkt')
 
 # document for different corpora
 corpus_business = business
@@ -668,7 +668,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 # Ensure you have downloaded NLTK data
-nltk.download('punkt')
+#nltk.download('punkt')
 
 # Define your documents for different corpora
 corpus_business = business
@@ -683,7 +683,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 # Ensure you have downloaded NLTK data
-nltk.download('punkt')
+#nltk.download('punkt')
 
 # Define your documents for different corpora
 corpus_business = business
@@ -737,41 +737,51 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 # TODO: Write a function to perform part of speech tagging using NLTK, Spacy, or other libraries
 
 def pos_tagging(texts):
-    # NLTK
-    words_nltk = nltk.word_tokenize(text)
-    pos_tags_nltk = nltk.pos_tag(words_nltk)
-    # spaCy
-    doc_spacy = nlp_spacy(text)
-    pos_tags_spacy = [(token.text, token.pos_) for token in doc_spacy]
-    return pos_tags_nltk,pos_tags_spacy
+    nltk_tags_list = []
+    spacy_tags_list = []
+
+    for text in texts:
+        # NLTK
+        words_nltk = nltk.word_tokenize(text)
+        pos_tags_nltk = nltk.pos_tag(words_nltk)
+        
+        # spaCy
+        doc_spacy = nlp_spacy(text)
+        pos_tags_spacy = [(token.text, token.pos_) for token in doc_spacy]
+        
+        nltk_tags_list.append(pos_tags_nltk)
+        spacy_tags_list.append(pos_tags_spacy)
+
+    return nltk_tags_list, spacy_tags_list
+
 
 # Task 2: Apply POS tagging to preprocessed data
 # TODO: Apply the POS tagging function to the preprocessed data
 
-for category, data in corpora.items():
-    preprocessed_text = data["original"]
-    nltk_tag,spacy_tag=pos_tagging(preprocessed_text)
+for category, text in corpora.items():
+    nltk_tag,spacy_tag=pos_tagging(text)
     print(f'NLTK Tag for {category}',nltk_tag)
     print(f'Spacy Tag for {category}',spacy_tag)
     print()  # Separating line between categories
 
 # Task 3: Perform WordNet analysis
 # TODO: Utilize WordNet or similar resources for semantic analysis, synonym identification, etc.
-topics = corpora.keys()
+topics = lemmatized_corpora.keys()
 
 set_of_nltk_synonyms,set_of_tb_synonyms,set_of_nltk_hypernyms,set_of_tb_hypernyms={},{},{},{}
 for topic in topics:
-    sentence = corpora[topic]['lemmatized']
-    for word in sentence.split():
-        try:
-            #Getting the synonymns of the words
-            set_of_nltk_synonyms[word+'_synonyms']=set([syn.name()[:-5] for syn in wordnet.synsets(word)]) # Using the nltk library
-            set_of_tb_synonyms[word+'_synonyms'] = set([syn.name()[:-5] for syn in Word(word).get_synsets()]) # Using the textblob library
-            #Getting the hypernymns
-            set_of_nltk_hypernyms[word+'_hypernyms']= [[n.name()[:-5] for n in hyn.hypernyms()][0] for hyn in wordnet.synsets(word)] #Using the nltk library
-            set_of_tb_hypernyms[word+'_hypernyms'] = [[n.name()[:-5] for n in hyn.hypernyms()][0] for hyn in Word(word).get_synsets()] #Using the textblob library
-        except Exception as e:
-            continue
+    sentences = lemmatized_corpora[topic]
+    for sentence in sentences:
+        for word in sentence.split():
+            try:
+                #Getting the synonymns of the words
+                set_of_nltk_synonyms[word+'_synonyms']=set([syn.name()[:-5] for syn in wordnet.synsets(word)]) # Using the nltk library
+                set_of_tb_synonyms[word+'_synonyms'] = set([syn.name()[:-5] for syn in Word(word).get_synsets()]) # Using the textblob library
+                #Getting the hypernymns
+                set_of_nltk_hypernyms[word+'_hypernyms']= [[n.name()[:-5] for n in hyn.hypernyms()][0] for hyn in wordnet.synsets(word)] #Using the nltk library
+                set_of_tb_hypernyms[word+'_hypernyms'] = [[n.name()[:-5] for n in hyn.hypernyms()][0] for hyn in Word(word).get_synsets()] #Using the textblob library
+            except Exception as e:
+                continue
 print(set_of_nltk_synonyms)
 print(set_of_tb_synonyms)
 print(set_of_nltk_hypernyms)
@@ -781,20 +791,25 @@ print(set_of_tb_hypernyms)
 # TODO: Experiment with additional libraries (e.g., TextBlob, Pattern) and compare the results
 from textblob import TextBlob
 
-def pos_exp_tagging(text):
-    # TextBlob
-    blob = TextBlob(text)
-    pos_tags_textblob = blob.tags    
-    return pos_tags_textblob
+def pos_exp_tagging(texts):
+    pos_tags_list = []
 
-for category, data in corpora.items():
-    preprocessed_text = data["original"]
-    sports_blob_tag=pos_exp_tagging(preprocessed_text)
+    for text in texts:
+        # TextBlob
+        blob = TextBlob(text)
+        pos_tags_textblob = blob.tags
+        pos_tags_list.append(pos_tags_textblob)
+
+    return pos_tags_list
+
+for category, text in corpora.items():
+    sports_blob_tag=pos_exp_tagging(text)
     print(f'TextBlob Tag for {category}\n',sports_blob_tag)
 
-#Pattern cannot be used because 
+
 
 #TDM, DTM, TF-IDF
+vectorizer=CountVectorizer()
 tfidf=TfidfVectorizer()
 
 DTM_sports=vectorizer.fit_transform(lemmatized_sports)
