@@ -8,10 +8,10 @@ import re
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 
-#nltk.download('stopwords')
-#nltk.download('punkt')
-#nltk.download('wordnet')
-#nltk.download('averaged_perceptron_tagger')
+nltk.download('stopwords')
+nltk.download('punkt')
+nltk.download('wordnet')
+nltk.download('averaged_perceptron_tagger')
 
 def corp_build(x):
   text=""
@@ -652,7 +652,7 @@ lemmatized_globe = lemmatized_corpora["globe"]
 # Task 4: Evaluate the performance of tokenization and morphological analysis techniques
 # TODO: Compare and document the performance and effectiveness of the implemented techniques
 # Ensure you have downloaded NLTK data
-#nltk.download('punkt')
+nltk.download('punkt')
 
 # document for different corpora
 corpus_business = business
@@ -668,7 +668,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 # Ensure you have downloaded NLTK data
-#nltk.download('punkt')
+nltk.download('punkt')
 
 # Define your documents for different corpora
 corpus_business = business
@@ -683,7 +683,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 # Ensure you have downloaded NLTK data
-#nltk.download('punkt')
+nltk.download('punkt')
 
 # Define your documents for different corpora
 corpus_business = business
@@ -807,10 +807,12 @@ for category, text in corpora.items():
     print(f'TextBlob Tag for {category}\n',sports_blob_tag)
 
 
-
-#TDM, DTM, TF-IDF
+#Initializing count vectorizer
 vectorizer=CountVectorizer()
+
+#Initializing tfidf vectorizer
 tfidf=TfidfVectorizer()
+#TDM, DTM, TF-IDF
 
 DTM_sports=vectorizer.fit_transform(lemmatized_sports)
 TDM_sports=DTM_sports.T
