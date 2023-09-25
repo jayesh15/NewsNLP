@@ -1,12 +1,25 @@
 #Team 1:
 import requests
-from lxml import html
 import nltk
 import string
 import emoji
 import re
+import sentencepiece as spm
+import spacy
+from textblob import TextBlob
 from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
+from nltk.tokenize import word_tokenize,TweetTokenizer, TreebankWordTokenizer
+from sklearn.metrics.pairwise import cosine_similarity
+from lxml import html
+from sklearn.feature_extraction.text import TfidfVectorizer
+from tokenizers import ByteLevelBPETokenizer, SentencePieceBPETokenizer
+from nltk.stem import PorterStemmer, WordNetLemmatizer
+from sklearn.feature_extraction.text import CountVectorizer
+from nltk.corpus import wordnet
+from textblob import Word
+from textblob import TextBlob
+from nltk.tag import pos_tag
+
 
 nltk.download('stopwords')
 nltk.download('punkt')
@@ -483,20 +496,6 @@ technology = text_preprocessing(tech_corp)
 # TODO: Write functions to perform different word tokenization techniques (whitespace, regex, etc.)
 
 
-import nltk
-from nltk.tokenize import word_tokenize, TweetTokenizer, TreebankWordTokenizer
-import sentencepiece as spm
-from tokenizers import ByteLevelBPETokenizer, SentencePieceBPETokenizer
-import re
-import nltk
-from nltk.tokenize import word_tokenize
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
-
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
-
-
 # whitespace tokenization function
 def whitespace_tokenize_corpus(corpus):
     return [sentence.split() for sentence in corpus]
@@ -585,8 +584,7 @@ print("Whitespace Subword Tokenization (Technology):", subword_tokenized_technol
 # Task 3: Experiment with morphological analysis methods
 # TODO: Implement and evaluate different morphological analysis methods (stemming, lemmatization, etc.)
 # function for stemming and lemmatization
-from nltk.stem import PorterStemmer, WordNetLemmatizer
-from nltk.corpus import stopwords
+
 def apply_morphological_analysis(corpus):
     stemmer = PorterStemmer()
     lemmatizer = WordNetLemmatizer()
@@ -638,11 +636,11 @@ lemmatized_technology = lemmatized_corpora["technology"]
 stemmed_sports = stemmed_corpora["sports"]
 lemmatized_sports = lemmatized_corpora["sports"]
 
-stemmed_politics = stemmed_corpora["business"]
-lemmatized_politics = lemmatized_corpora["business"]
+stemmed_business = stemmed_corpora["business"]
+lemmatized_business = lemmatized_corpora["business"]
 
-stemmed_education = stemmed_corpora["health"]
-lemmatized_education = lemmatized_corpora["health"]
+stemmed_health = stemmed_corpora["health"]
+lemmatized_health = lemmatized_corpora["health"]
 
 stemmed_globe = stemmed_corpora["globe"]
 lemmatized_globe = lemmatized_corpora["globe"]
@@ -662,14 +660,6 @@ corpus_globe = globe
 corpus_technology = technology
 
 
-import nltk
-from nltk.tokenize import word_tokenize
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
-
-# Ensure you have downloaded NLTK data
-nltk.download('punkt')
-
 # Define your documents for different corpora
 corpus_business = business
 corpus_technology = technology
@@ -677,13 +667,6 @@ corpus_globe = globe
 corpus_health = health
 corpus_sports = sports
 
-import nltk
-from nltk.tokenize import word_tokenize
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
-
-# Ensure you have downloaded NLTK data
-nltk.download('punkt')
 
 # Define your documents for different corpora
 corpus_business = business
@@ -692,7 +675,7 @@ corpus_globe = globe
 corpus_health =health
 corpus_sports = sports
 
-from sklearn.feature_extraction.text import CountVectorizer
+
 
 # Define a function to create a count matrix using Count Vectorizer
 def create_count_matrix(documents):
@@ -726,13 +709,9 @@ print(count_matrix_globe.toarray())
 
 # Team 4: NLP Part of Speech Tagging and WordNet Analysis
 # TODO: Import necessary libraries for part of speech tagging and WordNet analysis
-from nltk.tag import pos_tag
-import spacy
+
 nlp_spacy = spacy.load('en_core_web_sm')
-from nltk.corpus import wordnet
-from textblob import Word
-from textblob import TextBlob
-from sklearn.feature_extraction.text import TfidfVectorizer
+
 # Task 1: Implement part of speech tagging
 # TODO: Write a function to perform part of speech tagging using NLTK, Spacy, or other libraries
 
@@ -789,7 +768,7 @@ print(set_of_tb_hypernyms)
 
 # Task 4: Explore additional NLP libraries for POS tagging and WordNet analysis
 # TODO: Experiment with additional libraries (e.g., TextBlob, Pattern) and compare the results
-from textblob import TextBlob
+
 
 def pos_exp_tagging(texts):
     pos_tags_list = []
@@ -821,20 +800,20 @@ print('TDM for Sports\n',TDM_sports)
 print('DTM for Sports\n',DTM_sports)
 print('TF-IDF for Sports\n',TFIDF_sports)
 
-DTM_politics=vectorizer.fit_transform(lemmatized_politics)
-TDM_politics=DTM_politics.T
-TFIDF_politics=tfidf.fit_transform(lemmatized_politics)
-print('TDM for Politics\n',TDM_politics)
-print('DTM for Politics\n',DTM_politics)
-print('TF-IDF for Politics\n',TFIDF_politics)
+DTM_health=vectorizer.fit_transform(lemmatized_health)
+TDM_health=DTM_health.T
+TFIDF_health=tfidf.fit_transform(lemmatized_health)
+print('TDM for Health\n',TDM_health)
+print('DTM for Health\n',DTM_health)
+print('TF-IDF for Health\n',TFIDF_health)
 
 
-DTM_education=vectorizer.fit_transform(lemmatized_education)
-TDM_education=DTM_education.T
-TFIDF_education=tfidf.fit_transform(lemmatized_education)
-print('TDM for Education\n',TDM_education)
-print('DTM for Education\n',DTM_education)
-print('TF-IDF for Education\n',TFIDF_education)
+DTM_business=vectorizer.fit_transform(lemmatized_business)
+TDM_business=DTM_business.T
+TFIDF_business=tfidf.fit_transform(lemmatized_business)
+print('TDM for Business\n',TDM_business)
+print('DTM for Business\n',DTM_business)
+print('TF-IDF for Business\n',TFIDF_business)
 
 
 DTM_globe=vectorizer.fit_transform(lemmatized_globe)
@@ -857,14 +836,11 @@ print('TF-IDF for Technology\n',TFIDF_technology)
 #POS TAGGING TEST
 text = "This is an example sentence for POS tagging."
 #NLTK TAGGING
-import nltk
-from nltk.tokenize import word_tokenize
 tokens = word_tokenize(text)
 nltk_pos_tags = nltk.pos_tag(tokens)
 print("NLTK POS Tags:", nltk_pos_tags)
 
 #SPACY TAGGING
-import spacy
 nlp = spacy.load("en_core_web_sm")
 doc = nlp(text)
 spacy_pos_tags = [(token.text, token.pos_) for token in doc]
@@ -899,6 +875,24 @@ correct_tags = [('This', 'DT'), ('is', 'VBZ'), ('an', 'DT'), ('example', 'NN'), 
 textblob_correct_count = sum(1 for tag1, tag2 in zip(correct_tags, textblob_pos_tags) if tag1[1] == tag2[1])
 textblob_accuracy = textblob_correct_count / len(correct_tags)
 print("TextBlob Accuracy:", textblob_accuracy)
+
+
+#Cosine Similarity
+
+similarity = cosine_similarity(TFIDF_sports)
+print("Cosine Similarity between sports documents is:",similarity[0][1])
+
+similarity = cosine_similarity(TFIDF_health)
+print("Cosine Similarity between health documents is:",similarity[0][1])
+
+similarity = cosine_similarity(TFIDF_business)
+print("Cosine Similarity between business documents is:",similarity[0][1])
+
+similarity = cosine_similarity(TFIDF_globe)
+print("Cosine Similarity between globe documents is:",similarity[0][1])
+
+similarity = cosine_similarity(TFIDF_technology)
+print("Cosine Similarity between technology documents is:",similarity[0][1])
 
 
 # Team 5: NLP Data Visualization and Analysis
