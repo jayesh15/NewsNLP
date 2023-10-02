@@ -434,7 +434,7 @@ print(global2)
 
 
 # Team 2: NLP Preprocessing
-# Building corpora of article of similar genre 
+# Building corpora of article of similar genre
 sports_corp=[sports1,sports2]
 business_corp = [business1,business2]
 health_corp = [health1,health2]
@@ -452,7 +452,7 @@ def text_preprocessing(corp):
     text = text.translate(str.maketrans("","",string.punctuation))
 
     #Removal of punctuation present with different ASCII Code left out of string.punctuation
-    punc = ['“', "”", "’", "…", "‘", "—"]
+    punc = ['“', "”", "’", "…", "‘", "—",'私たちの行動規範：トムソン・ロイター「信頼の原則」','\ufeff']
     for i in punc:
       text = text.replace(i,"")
 
@@ -467,7 +467,7 @@ def text_preprocessing(corp):
     # Strip extra whitespaces
     text = ' '.join(text.split())
 
-    # Emoji Removing 
+    # Emoji Removing
     text = re.sub(r"(?:\@|http?\://|https?\://|www)\S+", '', text)  # Remove URLs
     text = " ".join(text.split())
     text = re.sub(r'#', '', text)  # Remove hashtags
@@ -477,7 +477,7 @@ def text_preprocessing(corp):
     text = emoji.demojize(text)
     text = re.sub(r':[a-zA-Z_]+:', '', text)
 
-    processed_corp.append(text) 
+    processed_corp.append(text)
   return processed_corp
 
 # Processed corpus from similar genre
@@ -487,10 +487,25 @@ health = text_preprocessing(health_corp)
 globe = text_preprocessing(global_corp)
 technology = text_preprocessing(tech_corp)
 
+#Validation of preprocessing function
+sc= []
+x = [sports,health,technology,globe,business]
+for k in x:
+  for j in range(len(k)):
+    for i in k[j]:
+      if i != ' ' and not i.isalpha():
+        sc.append(i)
+      else:
+        pass
+  if len(sc) >0:
+    print(sc)
+  else:
+    print(f"No special characters found in coprus")
+    print('--'*40)
 
 
 # Team 3: NLP Morphological Analysis and Tokenization
-# TODO: Import necessary libraries for morphological analysis and tokenization 
+# TODO: Import necessary libraries for morphological analysis and tokenization
 #task 1
 # Task 1: Implement word tokenization techniques
 # TODO: Write functions to perform different word tokenization techniques (whitespace, regex, etc.)
@@ -723,11 +738,11 @@ def pos_tagging(texts):
         # NLTK
         words_nltk = nltk.word_tokenize(text)
         pos_tags_nltk = nltk.pos_tag(words_nltk)
-        
+
         # spaCy
         doc_spacy = nlp_spacy(text)
         pos_tags_spacy = [(token.text, token.pos_) for token in doc_spacy]
-        
+
         nltk_tags_list.append(pos_tags_nltk)
         spacy_tags_list.append(pos_tags_spacy)
 
