@@ -515,6 +515,7 @@ for k in x:
 # TODO: Write functions to perform different word tokenization techniques (whitespace, regex, etc.)
 
 
+
 # whitespace tokenization function
 def whitespace_tokenize_corpus(corpus):
     return [sentence.split() for sentence in corpus]
@@ -547,39 +548,41 @@ globe_corpus = globe
 health_corpus = health
 
 sports_corpus = sports
+def flatten_list(list_of_lists):
+    return [token for sublist in list_of_lists for token in sublist]
 
 #applying the tokenize techniques to corpora
-whitespace_tokenized_business = whitespace_tokenize_corpus(business_corpus)
-wordpunct_tokenized_business = wordpunct_tokenize_corpus(business_corpus)
-treebank_tokenized_business= treebank_tokenize_corpus(business_corpus)
-tweet_tokenized_business = tweet_tokenize_corpus(business_corpus)
-subword_tokenized_business = subword_tokenize_corpus(business_corpus)
+whitespace_tokenized_business = flatten_list(whitespace_tokenize_corpus(business_corpus))
+wordpunct_tokenized_business = flatten_list(wordpunct_tokenize_corpus(business_corpus))
+treebank_tokenized_business= flatten_list(treebank_tokenize_corpus(business_corpus))
+tweet_tokenized_business = flatten_list(tweet_tokenize_corpus(business_corpus))
+subword_tokenized_business = flatten_list(subword_tokenize_corpus(business_corpus))
 
-whitespace_tokenized_technology = whitespace_tokenize_corpus(technology_corpus)
-wordpunct_tokenized_technology = wordpunct_tokenize_corpus(technology_corpus)
-treebank_tokenized_technology = treebank_tokenize_corpus(technology_corpus)
-tweet_tokenized_technology = tweet_tokenize_corpus(technology_corpus)
-subword_tokenized_technology = subword_tokenize_corpus(technology_corpus)
+whitespace_tokenized_technology = flatten_list(whitespace_tokenize_corpus(technology_corpus))
+wordpunct_tokenized_technology = flatten_list(wordpunct_tokenize_corpus(technology_corpus))
+treebank_tokenized_technology = flatten_list(treebank_tokenize_corpus(technology_corpus))
+tweet_tokenized_technology = flatten_list(tweet_tokenize_corpus(technology_corpus))
+subword_tokenized_technology = flatten_list(subword_tokenize_corpus(technology_corpus))
 
-whitespace_tokenized_globe = whitespace_tokenize_corpus(globe_corpus)
-wordpunct_tokenized_globe = wordpunct_tokenize_corpus(globe_corpus)
-treebank_tokenized_globe = treebank_tokenize_corpus(globe_corpus)
-tweet_tokenized_globe = tweet_tokenize_corpus(globe_corpus)
-subword_tokenized_globe = subword_tokenize_corpus(globe_corpus)
-
-
-whitespace_tokenized_sports = whitespace_tokenize_corpus(sports_corpus)
-wordpunct_tokenized_sports = wordpunct_tokenize_corpus(sports_corpus)
-treebank_tokenized_sports = treebank_tokenize_corpus(sports_corpus)
-tweet_tokenized_sports = tweet_tokenize_corpus(sports_corpus)
-subword_tokenized_sports = subword_tokenize_corpus(sports_corpus)
+whitespace_tokenized_globe = flatten_list(whitespace_tokenize_corpus(globe_corpus))
+wordpunct_tokenized_globe = flatten_list(wordpunct_tokenize_corpus(globe_corpus))
+treebank_tokenized_globe = flatten_list(treebank_tokenize_corpus(globe_corpus))
+tweet_tokenized_globe = flatten_list(tweet_tokenize_corpus(globe_corpus))
+subword_tokenized_globe = flatten_list(subword_tokenize_corpus(globe_corpus))
 
 
-whitespace_tokenized_health = whitespace_tokenize_corpus(health_corpus)
-wordpunct_tokenized_health = wordpunct_tokenize_corpus(health_corpus)
-treebank_tokenized_health  = treebank_tokenize_corpus(health_corpus)
-tweet_tokenized_health  = tweet_tokenize_corpus(health_corpus)
-subword_tokenized_health  = subword_tokenize_corpus(health_corpus)
+whitespace_tokenized_sports = flatten_list(whitespace_tokenize_corpus(sports_corpus))
+wordpunct_tokenized_sports = flatten_list(wordpunct_tokenize_corpus(sports_corpus))
+treebank_tokenized_sports = flatten_list(treebank_tokenize_corpus(sports_corpus))
+tweet_tokenized_sports = flatten_list(tweet_tokenize_corpus(sports_corpus))
+subword_tokenized_sports = flatten_list(subword_tokenize_corpus(sports_corpus))
+
+
+whitespace_tokenized_health =flatten_list( whitespace_tokenize_corpus(health_corpus))
+wordpunct_tokenized_health = flatten_list(wordpunct_tokenize_corpus(health_corpus))
+treebank_tokenized_health  =flatten_list( treebank_tokenize_corpus(health_corpus))
+tweet_tokenized_health  = flatten_list(tweet_tokenize_corpus(health_corpus))
+subword_tokenized_health  = flatten_list(subword_tokenize_corpus(health_corpus))
 
 # Print results for corpus
 print("Whitespace Tokenization (Politics):", whitespace_tokenized_business)
@@ -595,15 +598,13 @@ print("Penn Treebank Tokenization (Technology):", treebank_tokenized_technology)
 print("Tweet Tokenization (Technology):", tweet_tokenized_technology)
 print("Whitespace Subword Tokenization (Technology):", subword_tokenized_technology)
 
+import nltk
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer, WordNetLemmatizer
+from nltk.tokenize import sent_tokenize, word_tokenize
 
-# Task 2: Apply sentence tokenization techniques
-# TODO: Write a function to apply sentence tokenization to segment text into sentences
-# the sentence tokenization task because it doesn't make sense to perform sentence tokenization when there are no full stops to split the sentences in your text data.
 
-# Task 3: Experiment with morphological analysis methods
-# TODO: Implement and evaluate different morphological analysis methods (stemming, lemmatization, etc.)
-# function for stemming and lemmatization
-
+# Define a function for applying morphological analysis (stemming and lemmatization)
 def apply_morphological_analysis(corpus):
     stemmer = PorterStemmer()
     lemmatizer = WordNetLemmatizer()
@@ -613,103 +614,210 @@ def apply_morphological_analysis(corpus):
     lemmatized_corpus = []
 
     for text in corpus:
-        words = nltk.word_tokenize(text)
-        stemmed_words = [stemmer.stem(word) for word in words if word.lower() not in stop_words]
-        lemmatized_words = [lemmatizer.lemmatize(word) for word in words if word.lower() not in stop_words]
+        sentences = sent_tokenize(text)  # Sentence tokenization
 
-        stemmed_corpus.append(" ".join(stemmed_words))
-        lemmatized_corpus.append(" ".join(lemmatized_words))
+        # Initialize lists for stemmed and lemmatized sentences
+        stemmed_sentences = []
+        lemmatized_sentences = []
+
+        for sentence in sentences:
+            words = word_tokenize(sentence)  # Word tokenization
+            stemmed_words = [stemmer.stem(word) for word in words if word.lower() not in stop_words]
+            lemmatized_words = [lemmatizer.lemmatize(word) for word in words if word.lower() not in stop_words]
+
+            stemmed_sentences.append(" ".join(stemmed_words))
+            lemmatized_sentences.append(" ".join(lemmatized_words))
+
+        stemmed_corpus.append(stemmed_sentences)
+        lemmatized_corpus.append(lemmatized_sentences)
 
     return stemmed_corpus, lemmatized_corpus
 
-# corpora
+
+
 corpora = {
     "technology": technology,
     "sports": sports,
     "business": business,
     "health": health,
-    "globe" : globe
+    "globe": globe
 }
 
-# Applying morphological analysis to each corpus
+
 stemmed_corpora = {}
 lemmatized_corpora = {}
 
+# Applying morphological analysis to each corpus
 for corpus_name, corpus in corpora.items():
     stemmed_corpora[corpus_name], lemmatized_corpora[corpus_name] = apply_morphological_analysis(corpus)
 
-# Printed the stemmed and lemmatized results for each corpus
+# Printing the results for each corpus and each morphological analysis techniquue
 for corpus_name in corpora.keys():
-    print(f"Stemmed Corpus for {corpus_name.capitalize()}:")
+    print(f"Corpus: {corpus_name.capitalize()}")
+
     for i, text in enumerate(stemmed_corpora[corpus_name]):
+        for j, sentence in enumerate(text):
+            print(f"Stemmed Text {i + 1}, Sentence {i + 1}: {sentence}")
+
+    for i, text in enumerate(lemmatized_corpora[corpus_name]):
+        for j, sentence in enumerate(text):
+            print(f"Lemmatized Text {i + 1}, Sentence {i + 1}: {sentence}")
+import nltk
+from nltk.stem import PorterStemmer, SnowballStemmer, LancasterStemmer
+from nltk.stem import WordNetLemmatizer
+from nltk.corpus import stopwords
+
+# Function for stemming and lemmatization
+def apply_morphological_analysis(corpus):
+    porter_stemmer = PorterStemmer()
+    snowball_stemmer = SnowballStemmer("english")
+    lancaster_stemmer = LancasterStemmer()
+    lemmatizer = WordNetLemmatizer()
+    stop_words = set(stopwords.words("english"))
+
+    stemmed_corpus_porter = []
+    stemmed_corpus_snowball = []
+    stemmed_corpus_lancaster = []
+    lemmatized_corpus = []
+
+    for text in corpus:
+        words = nltk.word_tokenize(text)
+
+        # Stemming using different stemmers
+        stemmed_words_porter = [porter_stemmer.stem(word) for word in words if word.lower() not in stop_words]
+        stemmed_words_snowball = [snowball_stemmer.stem(word) for word in words if word.lower() not in stop_words]
+        stemmed_words_lancaster = [lancaster_stemmer.stem(word) for word in words if word.lower() not in stop_words]
+
+        # Lemmatization
+        lemmatized_words = [lemmatizer.lemmatize(word) for word in words if word.lower() not in stop_words]
+
+        stemmed_corpus_porter.append(" ".join(stemmed_words_porter))
+        stemmed_corpus_snowball.append(" ".join(stemmed_words_snowball))
+        stemmed_corpus_lancaster.append(" ".join(stemmed_words_lancaster))
+        lemmatized_corpus.append(" ".join(lemmatized_words))
+
+    return stemmed_corpus_porter, stemmed_corpus_snowball, stemmed_corpus_lancaster, lemmatized_corpus
+
+
+# Applying morphological analysis to each corpus
+stemmed_corpora_porter = {}
+stemmed_corpora_snowball = {}
+stemmed_corpora_lancaster = {}
+lemmatized_corpora = {}
+
+for corpus_name, corpus in corpora.items():
+    (stemmed_corpora_porter[corpus_name],
+     stemmed_corpora_snowball[corpus_name],
+     stemmed_corpora_lancaster[corpus_name],
+     lemmatized_corpora[corpus_name]) = apply_morphological_analysis(corpus)
+
+# Printing the results for each corpus
+for corpus_name in corpora.keys():
+    print(f"Stemmed Corpus (Porter) for {corpus_name.capitalize()}:")
+    for i, text in enumerate(stemmed_corpora_porter[corpus_name]):
+        print(f"Text {i + 1}: {text}")
+
+    print(f"\nStemmed Corpus (Snowball) for {corpus_name.capitalize()}:")
+    for i, text in enumerate(stemmed_corpora_snowball[corpus_name]):
+        print(f"Text {i + 1}: {text}")
+
+    print(f"\nStemmed Corpus (Lancaster) for {corpus_name.capitalize()}:")
+    for i, text in enumerate(stemmed_corpora_lancaster[corpus_name]):
         print(f"Text {i + 1}: {text}")
 
     print(f"\nLemmatized Corpus for {corpus_name.capitalize()}:")
     for i, text in enumerate(lemmatized_corpora[corpus_name]):
         print(f"Text {i + 1}: {text}")
-
-
-stemmed_technology = stemmed_corpora["technology"]
-lemmatized_technology = lemmatized_corpora["technology"]
-
-stemmed_sports = stemmed_corpora["sports"]
-lemmatized_sports = lemmatized_corpora["sports"]
-
-stemmed_business = stemmed_corpora["business"]
-lemmatized_business = lemmatized_corpora["business"]
-
-stemmed_health = stemmed_corpora["health"]
-lemmatized_health = lemmatized_corpora["health"]
-
-stemmed_globe = stemmed_corpora["globe"]
-lemmatized_globe = lemmatized_corpora["globe"]
+import nltk
+from nltk.stem import PorterStemmer, WordNetLemmatizer
+from nltk.corpus import stopwords
 
 
 
-# Task 4: Evaluate the performance of tokenization and morphological analysis techniques
-# TODO: Compare and document the performance and effectiveness of the implemented techniques
-# Ensure you have downloaded NLTK data
-nltk.download('punkt')
+# Function for applying morphological analysis (stemming and lemmatization)
+def apply_morphological_analysis(corpus, technique):
+    stemmer = PorterStemmer()
+    lemmatizer = WordNetLemmatizer()
+    stop_words = set(stopwords.words("english"))
 
-# document for different corpora
-corpus_business = business
-corpus_sports = sports
-corpus_health = health
-corpus_globe = globe
-corpus_technology = technology
+    stemmed_corpus = []
+    lemmatized_corpus = []
 
+    for text in corpus:
+        words = nltk.word_tokenize(text)
 
-# Define your documents for different corpora
-corpus_business = business
-corpus_technology = technology
-corpus_globe = globe
-corpus_health = health
-corpus_sports = sports
+        if technique == "stemming":
+            # Stemming
+            processed_words = [stemmer.stem(word) for word in words if word.lower() not in stop_words]
+        elif technique == "lemmatization":
+            # Lemmatization
+            processed_words = [lemmatizer.lemmatize(word) for word in words if word.lower() not in stop_words]
+        else:
+            raise ValueError("Invalid technique. Use 'stemming' or 'lemmatization'.")
 
+        processed_text = " ".join(processed_words)
 
-# Define your documents for different corpora
+        if technique == "stemming":
+            stemmed_corpus.append(processed_text)
+        elif technique == "lemmatization":
+            lemmatized_corpus.append(processed_text)
+
+    return stemmed_corpus, lemmatized_corpus
+
+#corpora
+corpora = {
+    "technology": technology,
+    "sports": sports,
+    "business": business,
+    "health": health,
+    "globe": globe
+}
+
+techniques = ["stemming", "lemmatization"]
+
+results = {}
+
+for technique in techniques:
+    technique_results = {}
+    
+    for corpus_name, corpus in corpora.items():
+        technique_results[corpus_name] = apply_morphological_analysis(corpus, technique)
+
+    results[technique] = technique_results
+
+# Print the results for each technique and each corpus
+for technique, technique_results in results.items():
+    print(f"Technique: {technique.capitalize()}")
+    
+    for corpus_name, (stemmed_results, lemmatized_results) in technique_results.items():
+        print(f"Corpus: {corpus_name.capitalize()}")
+        
+        for i, text in enumerate(stemmed_results):
+            print(f"Stemmed Text {i + 1}, Sentence {i + 1}: {text}")
+
+        for i, text in enumerate(lemmatized_results):
+            print(f"Lemmatized Text {i + 1}, Sentence {i + 1}: {text}")
+# Dedine corpora
 corpus_business = business
 corpus_technology = technology
 corpus_globe = globe
 corpus_health =health
 corpus_sports = sports
 
-
-
-# Define a function to create a count matrix using Count Vectorizer
+#function to create a count matrix using Count Vectorizer
 def create_count_matrix(documents):
     count_vectorizer = CountVectorizer()
     count_matrix = count_vectorizer.fit_transform(documents)
     return count_matrix
 
-# Create a count matrix for each corpus
+#  count matrix for each corpus
 count_matrix_politics = create_count_matrix(corpus_business)
 count_matrix_technology = create_count_matrix(corpus_technology)
 count_matrix_sports = create_count_matrix(corpus_sports)
 count_matrix_globe = create_count_matrix(corpus_globe)
 count_matrix_education = create_count_matrix(corpus_health)
 
-# Print the count matrices
+# count matrices
 print("Count Matrix (business):")
 print(count_matrix_politics.toarray())
 
@@ -724,6 +832,8 @@ print(count_matrix_education.toarray())
 
 print("Count Matrix (globe):")
 print(count_matrix_globe.toarray())
+
+
 
 
 # Team 4: NLP Part of Speech Tagging and WordNet Analysis
