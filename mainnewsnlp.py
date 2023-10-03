@@ -19,7 +19,11 @@ from nltk.corpus import wordnet
 from textblob import Word
 from textblob import TextBlob
 from nltk.tag import pos_tag
-
+import matplotlib.pyplot as plt
+import seaborn as sns
+from wordcloud import WordCloud
+import numpy as np
+from nltk.probability import FreqDist
 
 nltk.download('stopwords')
 nltk.download('punkt')
@@ -911,16 +915,181 @@ print("Cosine Similarity between technology documents is:",similarity[0][1])
 
 
 # Team 5: NLP Data Visualization and Analysis
-# TODO: Import necessary libraries for data visualization and analysis
 
 # Task 1: Generate word clouds
 # TODO: Create word clouds based on the preprocessed data
 
+b_corpus = business
+t_corpus = technology
+s_corpus = sports
+h_corpus = health
+g_corpus = globe
+
+# Create WordCloud objects
+
+wc_business = WordCloud(width=800, height=400, background_color='black').generate(" ".join(b_corpus))
+wc_technology = WordCloud(width=800, height=400, background_color='skyblue').generate(" ".join(t_corpus))
+wc_sports = WordCloud(width=800, height=400, background_color='lavender').generate(" ".join(s_corpus))
+wc_health = WordCloud(width=800, height=400, background_color='crimson').generate(" ".join(h_corpus))
+wc_globe = WordCloud(width=800, height=400, background_color='mediumorchid').generate(" ".join(g_corpus))
+
+# Create a list of WordCloud objects and corresponding titles
+wordclouds = [(wc_business, "Business Word Cloud"),
+             (wc_technology, "Technology Word Cloud"),
+             (wc_sports, "Sports Word Cloud"),
+             (wc_health, "Health Word Cloud"),
+             (wc_globe, "Globe Word Cloud")]
+
+# Iterate through the list and display WordClouds with titles
+for wordcloud, title in wordclouds:
+    plt.figure(figsize=(10, 6))
+    plt.imshow(wordcloud, interpolation='bilinear')
+    plt.axis("off")
+    plt.title(title)
+    plt.show()
+  
 # Task 2: Create frequency distributions
 # TODO: Generate frequency distributions of words to gain insights
 
+# Define the text corpora using your variables
+b_tokens = word_tokenize(" ".join(b_corpus))
+s_tokens = word_tokenize(" ".join(s_corpus))
+h_tokens = word_tokenize(" ".join(h_corpus))
+g_tokens = word_tokenize(" ".join(g_corpus))
+t_tokens = word_tokenize(" ".join(t_corpus))
+
+# Function to remove punctuation and white spaces from a list of tokens
+def preprocess_tokens(tokens):
+    translator = str.maketrans('', '', string.punctuation)
+    tokens = [token.translate(translator).strip() for token in tokens]
+    return tokens
+
+# Token lists without punctuation and white spaces
+b_tokens = preprocess_tokens(b_tokens)
+s_tokens = preprocess_tokens(s_tokens)
+h_tokens = preprocess_tokens(h_tokens)
+g_tokens = preprocess_tokens(g_tokens)
+t_tokens = preprocess_tokens(t_tokens)
+
+# Create a list of token lists and corresponding titles
+token_lists = [b_tokens, s_tokens, h_tokens, g_tokens, t_tokens]
+titles = ["Business Word Count", "Technology Word Count", "Sports Word Count", "Health Word Count", "Globe Word Count"]
+
+# Initialize a list to store filtered token lists
+filtered_token_lists = []
+
+# Remove stopwords from each token list
+for tokens in token_lists:
+    stop_words = set(stopwords.words("english"))
+
+    filtered_tokens = [word for word in tokens if word.lower() not in stop_words]
+    filtered_token_lists.append(filtered_tokens)
+
+# Calculate the word frequency distribution for each token list
+freq_dists = [FreqDist(tokens) for tokens in filtered_token_lists]
+
+# Print the word count for each word in each distribution
+for title, freq_dist in zip(titles, freq_dists):
+    print(title)
+    for word, count in freq_dist.items():
+        print(f"{word}: {count}")
+    print("\n")
+
 # Task 3: Explore visualization techniques
 # TODO: Experiment with different visualization techniques (bar charts, scatter plots, heatmaps)
+
+# Bar Charts for Word Frequencies:
+
+categories = ["Business", "Technology", "Sports", "Health", "Globe"]
+
+# Define categories and corresponding filtered token lists
+token_lists = [filtered_token_lists[0], filtered_token_lists[1], filtered_token_lists[2], filtered_token_lists[3], filtered_token_lists[4]]
+
+# Create subplots for word frequency bar charts
+plt.figure(figsize=(20,10))
+for i in range(len(categories)):
+    plt.subplot(2, 3, i + 1)
+
+    # Get the frequency distribution for the current category
+    freq_dist = FreqDist(token_lists[i])
+
+    # Plot the top N words by frequency (e.g., top 20)
+    top_words = freq_dist.most_common(20)
+    words, counts = zip(*top_words)
+
+    plt.bar(words, counts)
+    plt.title(f"Top 20 Words in {categories[i]} Category")
+    plt.xlabel("Words")
+    plt.ylabel("Frequency")
+    plt.xticks(rotation=45)
+
+plt.tight_layout()
+plt.show()
+
+# Bar stacked Chart for Word Frequency Comparison:
+
+# Define the labels
+labels = list(freq_dists[0].keys())[:10]
+
+# Create a list of word frequencies for each category, excluding corresponding labels
+word_frequencies = [list(freq_dist.values())[:10] for freq_dist in freq_dists]
+
+# Filter out frequencies for corresponding labels
+filtered_word_frequencies = []
+for frequencies in word_frequencies:
+    filtered_frequencies = []
+    for label, freq in zip(labels, frequencies):
+        filtered_frequencies.append(freq)
+    filtered_word_frequencies.append(filtered_frequencies)
+
+# Create a stacked bar chart with filtered data
+plt.figure(figsize=(8, 5))
+
+# Initialize the bottom for each category
+bottom = np.zeros(len(labels))
+
+# Create a bar for each category and stack them with filtered data
+for i, (category, frequencies) in enumerate(zip(categories, filtered_word_frequencies)):
+    plt.bar(labels, frequencies, label=category, alpha=0.7, bottom=bottom)
+    bottom += frequencies
+
+plt.xlabel("Words")
+plt.ylabel("Frequency")
+plt.title("Top 10 Word Frequencies Comparison")
+plt.legend()
+plt.xticks(rotation=45)
+plt.show()
+
+# # Heatmap for TF-IDF Matrices:
+
+# Loop through each category
+
+for category in categories:
+    # Get the top 10 terms by TF-IDF score for the current category
+    top_terms = tfidf.get_feature_names_out()[:10]
+
+    # Extract the TF-IDF values for the top 10 terms in the current category
+    if category == "Business":
+        TFIDF_category = TFIDF_business
+    elif category == "Technology":
+        TFIDF_category = TFIDF_technology
+    elif category == "Sports":
+        TFIDF_category = TFIDF_sports
+    elif category == "Health":
+        TFIDF_category = TFIDF_health
+    elif category == "Globe":
+        TFIDF_category = TFIDF_globe
+
+    top_terms_tfidf = TFIDF_category.toarray()[:10, :10]
+
+    # Plot a heatmap for TF-IDF values of the top 10 terms in the current category
+    plt.figure(figsize=(10, 5))
+    sns.heatmap(top_terms_tfidf, cmap="YlGnBu", xticklabels = top_terms, annot=True)
+    plt.title(f"TF-IDF Matrix for Top 10 Terms in {category}")
+    plt.xlabel("Terms")
+    plt.ylabel("Documents")
+    plt.tight_layout()
+    plt.show()
 
 # Task 4: Evaluate effectiveness of visualization techniques
 # TODO: Assess the effectiveness of different visualization techniques in conveying information
