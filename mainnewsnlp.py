@@ -30,6 +30,8 @@ nltk.download('punkt')
 nltk.download('wordnet')
 nltk.download('averaged_perceptron_tagger')
 
+
+
 def corp_build(x):
   text=""
   text = " ".join(i for i in x)
@@ -157,7 +159,7 @@ print(tech1)
 
 # Scraping News from Investing.com
 
-tech_url2 = "https://www.investing.com/news/stock-market-news/apple-adopts-usb-typec-for-iphone-15-series-elon-musk-lauds-decision-93CH-3175191"
+tech_url2 = "https://www.indiatoday.in/technology/news/story/elon-musk-reacts-to-usb-type-c-charging-in-apple-iphone-15-finds-it-amazing-2435701-2023-09-14"
 tech2 = []
 
 # Send an HTTP GET request to the URL
@@ -168,9 +170,10 @@ if response.status_code == 200:
     # Parse the HTML content of the webpage
     tree = html.fromstring(response.text)
 
-    headline_xpath = '/html/body/div[6]/section/h1'
+    headline_xpath = '/html/body/div[1]/div[3]/div/div/div[2]/main/div/div[1]/h1'
 
-    article_xpath = '/html/body/div[6]/section/div[5]/p'
+
+    article_xpath ='/html/body/div[1]/div[3]/div/div/div[2]/main/div/div[1]/div[7]/div[1]/p'
 
     # Use XPath to extract the headline and article content
     headline_elements = tree.xpath(headline_xpath)
@@ -356,6 +359,8 @@ print(health2)
 
 # Scraping News from NEWS DRUM URL
 
+# Scraping News from NEWS DRUM URL
+
 global_url1 = "https://www.newsdrum.in/international/libya-seals-off-flooded-city-so-searchers-can-look-for-10000-missing-after-death-toll-passes-11000-1346077"
 
 global1 = []
@@ -368,9 +373,9 @@ if response.status_code == 200:
     # Parse the HTML content of the webpage
     tree = html.fromstring(response.text)
 
-    headline_xpath = '/html/body/div[1]/main/div/div[2]/article/div/div[1]/div/div[2]/section[1]'
+    headline_xpath = '/html/body/div[2]/main/div/div[2]/article/div/div/div/div[2]/section[1]/h1'
 
-    article_xpath = '/html/body/div[1]/main/div/div[2]/article/div/div[1]/div/div[2]/section[2]/div[2]/div[1]/p'
+    article_xpath = '/html/body/div[2]/main/div/div[2]/article/div/div[1]/div/div[2]/section[2]/div[2]/div[1]/p[1]'
 
     # Use XPath to extract the headline and article content
     headline_elements = tree.xpath(headline_xpath)
@@ -393,6 +398,8 @@ global1 = corp_build(global1)
 
 # Print the concatenated article content
 print(global1)
+
+
 
 # Scraping News from HINDU URL
 
@@ -431,8 +438,6 @@ global2 = corp_build(global2)
 
 # Print the concatenated article content
 print(global2)
-
-
 # Task 6: Document the web scraping process
 # TODO: Write a detailed documentation of the web scraping process and challenges faced
 
