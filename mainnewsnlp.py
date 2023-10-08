@@ -94,7 +94,7 @@ if response.status_code == 200:
 
     headline_xpath = '/html/body/main/section/div/div[1]/h1'
 
-    article_xpath = '/html/body/main/section/div/div[2]/article/p'
+    article_xpath = '/html/body/main/section/div/div[2]/article/p[position() < last()]'
 
     # Use XPath to extract the headline and article content
     headline_elements = tree.xpath(headline_xpath)
@@ -212,7 +212,7 @@ if response.status_code == 200:
 
     headline_xpath = '/html/body/div[1]/div[3]/div/div/div[2]/main/div/div[1]/h1'
 
-    article_xpath = '/html/body/div[1]/div[3]/div/div/div[2]/main/div/div[1]/div[6]/div[1]'
+    article_xpath = '/html/body/div[1]/div[3]/div/div/div[2]/main/div/div[1]/div[6]/div[1]/p'
 
     # Use XPath to extract the headline and article content
     headline_elements = tree.xpath(headline_xpath)
@@ -252,7 +252,7 @@ if response.status_code == 200:
 
     headline_xpath = '/html/body/div[1]/div[3]/div/main/article/div[1]/div/header/div/div/h1'
 
-    article_xpath = '/html/body/div[1]/div[3]/div/main/article/div[1]/div/div/div/div[2]/p'
+    article_xpath = '/html/body/div[1]/div[3]/div/main/article/div[1]/div/div/div/div[2]/p[position() < last() - 1]'
 
     # Use XPath to extract the headline and article content
     headline_elements = tree.xpath(headline_xpath)
@@ -293,7 +293,7 @@ if response.status_code == 200:
 
     headline_xpath = '/html/body/div[1]/div[3]/div/main/article/div[1]/div/header/div/div/h1'
 
-    article_xpath = '/html/body/div[1]/div[3]/div/main/article/div[1]/div/div/div/div/p'
+    article_xpath = '/html/body/div[1]/div[3]/div/main/article/div[1]/div/div/div/div/p[position() < last()]'
 
     # Use XPath to extract the headline and article content
     headline_elements = tree.xpath(headline_xpath)
@@ -373,7 +373,7 @@ if response.status_code == 200:
     # Parse the HTML content of the webpage
     tree = html.fromstring(response.text)
 
-    headline_xpath = '/html/body/div[2]/main/div/div[2]/article/div/div/div/div[2]/section[1]/h1'
+    headline_xpath = '/html/body/div[1]/main/div/div[2]/article/div/div[1]/div/div[2]/section[1]/h1'
 
     article_xpath = '/html/body/div[2]/main/div/div[2]/article/div/div[1]/div/div[2]/section[2]/div[2]/div[1]/p[1]'
 
