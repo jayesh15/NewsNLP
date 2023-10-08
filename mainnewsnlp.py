@@ -927,40 +927,40 @@ vectorizer=CountVectorizer()
 tfidf=TfidfVectorizer()
 #TDM, DTM, TF-IDF
 
-DTM_sports=vectorizer.fit_transform(lemmatized_sports)
+DTM_sports=vectorizer.fit_transform(lemmatized_corpora['sports'])
 TDM_sports=DTM_sports.T
-TFIDF_sports=tfidf.fit_transform(lemmatized_sports)
+TFIDF_sports=tfidf.fit_transform(lemmatized_corpora['sports'])
 print('TDM for Sports\n',TDM_sports)
 print('DTM for Sports\n',DTM_sports)
 print('TF-IDF for Sports\n',TFIDF_sports)
 
-DTM_health=vectorizer.fit_transform(lemmatized_health)
+DTM_health=vectorizer.fit_transform(lemmatized_corpora['health'])
 TDM_health=DTM_health.T
-TFIDF_health=tfidf.fit_transform(lemmatized_health)
+TFIDF_health=tfidf.fit_transform(lemmatized_corpora['health'])
 print('TDM for Health\n',TDM_health)
 print('DTM for Health\n',DTM_health)
 print('TF-IDF for Health\n',TFIDF_health)
 
 
-DTM_business=vectorizer.fit_transform(lemmatized_business)
+DTM_business=vectorizer.fit_transform(lemmatized_corpora['business'])
 TDM_business=DTM_business.T
-TFIDF_business=tfidf.fit_transform(lemmatized_business)
+TFIDF_business=tfidf.fit_transform(lemmatized_corpora['business'])
 print('TDM for Business\n',TDM_business)
 print('DTM for Business\n',DTM_business)
 print('TF-IDF for Business\n',TFIDF_business)
 
 
-DTM_globe=vectorizer.fit_transform(lemmatized_globe)
+DTM_globe=vectorizer.fit_transform(lemmatized_corpora['globe'])
 TDM_globe=DTM_globe.T
-TFIDF_globe=tfidf.fit_transform(lemmatized_globe)
+TFIDF_globe=tfidf.fit_transform(lemmatized_corpora['globe'])
 print('TDM for Globe\n',TDM_globe)
 print('DTM for Globe\n',DTM_globe)
 print('TF-IDF for Globe\n',TFIDF_globe)
 
 
-DTM_technology=vectorizer.fit_transform(lemmatized_technology)
+DTM_technology=vectorizer.fit_transform(lemmatized_corpora['technology'])
 TDM_technology=DTM_technology.T
-TFIDF_technology=tfidf.fit_transform(lemmatized_technology)
+TFIDF_technology=tfidf.fit_transform(lemmatized_corpora['technology'])
 print('TDM for Technology\n',TDM_technology)
 print('DTM for Technology\n',DTM_technology)
 print('TF-IDF for Technology\n',TFIDF_technology)
