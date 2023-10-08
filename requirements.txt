@@ -1,9 +1,13 @@
-beautifulsoup4==4.12.2
 emoji==1.7.0
+lxml==4.9.3
+matplotlib==3.7.2
 nltk==3.8.1
+numpy==1.25.2
 Requests==2.31.0
 scikit_learn==1.2.2
+seaborn==0.13.0
 sentencepiece==0.1.99
 spacy==3.6.1
 textblob==0.17.1
 tokenizers==0.13.3
+wordcloud==1.9.2
